@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — K.O. Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* ============================================================
+       About — Hero
+       ============================================================ */
+    .ab-hero {
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+      display: grid;
+      grid-template-columns: 46fr 54fr;
+    }
+
+    /* ---- Photo column ---- */
+    .ab-photo-col {
+      position: relative;
+      overflow: hidden;
+      min-height: 580px;
+    }
+
+    /* Gradient scrim at bottom of photo */
+    .ab-photo-col::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.38) 0%,
+        transparent 45%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Orange left-edge accent — matches site's card hover stripe */
+    .ab-photo-col::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      z-index: 4;
+    }
+
+    .ab-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* Name plate over photo */
+    .ab-photo-label {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+      z-index: 3;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeUp 0.6s var(--ease-out) 1.1s forwards;
+    }
+
+    /* ---- Text column ---- */
+    .ab-text-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px var(--pad) 80px 64px;
+      border-left: 1px solid var(--border);
+    }
+
+    .ab-eyebrow {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.7s var(--ease-out) 0.12s forwards;
+    }
+
+    .ab-headline {
+      font-family: var(--font-display);
+      font-size: clamp(72px, 8.5vw, 134px);
+      line-height: 0.88;
+      letter-spacing: 0.01em;
+      margin-bottom: 48px;
+      overflow: hidden;
+    }
+
+    .ab-headline__line {
+      display: block;
+      opacity: 0;
+      transform: translateY(108%);
+      animation: slideUp 0.9s var(--ease-out) forwards;
+    }
+    .ab-headline__line:nth-child(1) { animation-delay: 0.22s; }
+    .ab-headline__line:nth-child(2) { animation-delay: 0.40s; }
+    .ab-headline__line:nth-child(3) { animation-delay: 0.57s; }
+
+    .ab-headline__line--accent { color: var(--accent); }
+
+    .ab-rule {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 36px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: abRuleIn 0.85s var(--ease-out) 0.74s forwards;
+    }
+
+    .ab-intro {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text);
+      max-width: 420px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.7s var(--ease-out) 0.86s forwards;
+    }
+
+    /* ============================================================
+       Story Section — dark background
+       ============================================================ */
+    .ab-story {
+      background: var(--dark);
+      color: white;
+      padding: 120px 0;
+    }
+
+    .ab-story__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .ab-story__statement {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 7.5vw, 112px);
+      line-height: 1.0;
+      letter-spacing: 0.02em;
+    }
+
+    .ab-story__statement em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .ab-story__right {
+      padding-top: 8px;
+    }
+
+    .ab-story__label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .ab-story__body {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.88;
+      color: rgba(255, 255, 255, 0.56);
+      margin-bottom: 28px;
+    }
+    .ab-story__body:last-child { margin-bottom: 0; }
+
+    /* ============================================================
+       Disciplines Row
+       ============================================================ */
+    .ab-disciplines {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 44px 0;
+    }
+
+    .ab-disciplines__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .ab-disciplines__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .ab-disciplines__sep {
+      width: 28px;
+      height: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .ab-disciplines__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .ab-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 15px;
+      transition:
+        background 0.22s var(--ease-out),
+        border-color 0.22s var(--ease-out),
+        color 0.22s var(--ease-out);
+      cursor: default;
+    }
+    .ab-tag:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    /* ============================================================
+       Skills / Focus Areas
+       ============================================================ */
+    .ab-skills {
+      padding: 100px 0;
+    }
+
+    .ab-skills__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+    }
+
+    .ab-skills__header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 56px;
+    }
+
+    .ab-skills__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .ab-skills__title {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 72px);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+
+    .ab-skills__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+    }
+
+    .ab-skill {
+      padding: 28px 40px 28px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Orange accent line that slides in on hover */
+    .ab-skill::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.48s var(--ease-out);
+    }
+    .ab-skill:hover::after { width: 100%; }
+
+    .ab-skill__num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .ab-skill__name {
+      font-family: var(--font-display);
+      font-size: clamp(19px, 2vw, 27px);
+      letter-spacing: 0.03em;
+      line-height: 1;
+      transition: color 0.22s;
+    }
+    .ab-skill:hover .ab-skill__name { color: var(--accent); }
+
+    /* ============================================================
+       Closing — dark
+       ============================================================ */
+    .ab-close {
+      background: var(--dark);
+      color: white;
+      padding: 120px var(--pad) 100px;
+      text-align: center;
+    }
+
+    .ab-close__inner {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .ab-close__eyebrow {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+    }
+
+    .ab-close__statement {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5.5vw, 82px);
+      line-height: 1.02;
+      letter-spacing: 0.02em;
+      margin-bottom: 44px;
+    }
+
+    .ab-close__statement em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .ab-close__sub {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.44);
+      max-width: 480px;
+      margin: 0 auto 48px;
+    }
+
+    .ab-close__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 6px;
+      text-decoration: none;
+      transition:
+        color 0.25s var(--ease-out),
+        border-color 0.25s var(--ease-out);
+    }
+    .ab-close__cta:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .ab-close__arrow {
+      transition: transform 0.3s var(--ease-out);
+    }
+    .ab-close__cta:hover .ab-close__arrow { transform: translateX(5px); }
+
+    /* ============================================================
+       Keyframes (page-specific)
+       ============================================================ */
+    @keyframes abRuleIn {
+      to { transform: scaleX(1); }
+    }
+
+    /* ============================================================
+       Responsive
+       ============================================================ */
+    @media (max-width: 960px) {
+      .ab-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .ab-photo-col {
+        min-height: 52vw;
+        max-height: 520px;
+      }
+
+      .ab-text-col {
+        padding: 56px var(--pad);
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+
+      .ab-story__inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .ab-skills__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .ab-skills__grid {
+        grid-template-columns: 1fr;
+      }
+      .ab-disciplines__inner {
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .ab-story { padding: 80px 0; }
+      .ab-skills { padding: 72px 0; }
+      .ab-close  { padding: 80px var(--pad); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       Navigation
+       ============================================================ -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="../index.html" class="nav__logo">K.O.</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../index.html"          class="nav__link">Home</a></li>
+        <li><a href="../projects/index.html" class="nav__link">Products</a></li>
+        <li><a href="../ux/index.html"       class="nav__link">UX</a></li>
+        <li><a href="../about/index.html"    class="nav__link nav__link--active">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============================================================
+         Hero
+         ============================================================ -->
+    <section class="ab-hero">
+
+      <!-- Photo column -->
+      <div class="ab-photo-col">
+        <img
+          src="../BWHeadshot.png"
+          alt="Keegan O'Neill"
+          class="ab-photo"
+        >
+        <span class="ab-photo-label">Keegan O'Neill, Designer</span>
+      </div>
+
+      <!-- Text column -->
+      <div class="ab-text-col">
+        <span class="ab-eyebrow">About</span>
+
+        <h1 class="ab-headline">
+          <span class="ab-headline__line">DESIGNING</span>
+          <span class="ab-headline__line">WITH</span>
+          <span class="ab-headline__line ab-headline__line--accent">PURPOSE.</span>
+        </h1>
+
+        <hr class="ab-rule">
+
+        <p class="ab-intro">
+          I'm Keegan O'Neill, an industrial designer who likes making things that feel intuitive, intentional and satisfying to use. Most of my work sits somewhere between product design, branding, and digital experiences, but at the center of all of it is the same goal: creating things people connect with and enjoy using.
+        </p>
+      </div>
+
+    </section>
+
+
+    <!-- ============================================================
+         Story — dark background
+         ============================================================ -->
+    <section class="ab-story">
+      <div class="ab-story__inner">
+
+        <div class="reveal">
+          <p class="ab-story__statement">
+            BUILT<br>
+            ON<br>
+            <em>REAL</em><br>
+            THINGS.
+          </p>
+        </div>
+
+        <div class="ab-story__right reveal reveal-delay-2">
+          <span class="ab-story__label">Background</span>
+
+          <p class="ab-story__body">
+            I'm studying industrial design at Iowa State, but most of what I've actually learned came from working with my hands: building, testing, breaking, and rebuilding. I've worked across packaging, powersports, apparel, product design, and digital interfaces. The context changes but the approach doesn't: understand what someone actually needs, then shape the experience around both how it feels to use and how it's visually communicated.
+          </p>
+
+          <p class="ab-story__body">
+            What keeps me interested in design is how every project opens the door into a completely different world. One month I'm learning about mobility systems, the next it's packaging psychology, UI flows, or content production. I like getting deep into unfamiliar spaces and figuring out what makes an experience feel natural, useful, and visually engaging to the people interacting with it.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Disciplines
+         ============================================================ -->
+    <section class="ab-disciplines">
+      <div class="ab-disciplines__inner reveal">
+        <span class="ab-disciplines__label">Disciplines</span>
+        <span class="ab-disciplines__sep"></span>
+        <div class="ab-disciplines__tags">
+          <span class="ab-tag">Industrial Design</span>
+          <span class="ab-tag">Product Design</span>
+          <span class="ab-tag">UX / UI</span>
+          <span class="ab-tag">Branding</span>
+          <span class="ab-tag">Creative Direction</span>
+          <span class="ab-tag">Product Visualization</span>
+          <span class="ab-tag">Photography</span>
+          <span class="ab-tag">Prototyping</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Skills / Focus Areas
+         ============================================================ -->
+    <section class="ab-skills">
+      <div class="ab-skills__inner">
+
+        <header class="ab-skills__header reveal">
+          <span class="ab-skills__eyebrow">Focus Areas</span>
+          <h2 class="ab-skills__title">What I Do</h2>
+        </header>
+
+        <div class="ab-skills__grid">
+
+          <div class="ab-skill reveal">
+            <p class="ab-skill__num">01</p>
+            <h3 class="ab-skill__name">Product Design</h3>
+          </div>
+          <div class="ab-skill reveal reveal-delay-1">
+            <p class="ab-skill__num">02</p>
+            <h3 class="ab-skill__name">UX &amp; UI</h3>
+          </div>
+          <div class="ab-skill reveal reveal-delay-2">
+            <p class="ab-skill__num">03</p>
+            <h3 class="ab-skill__name">Branding</h3>
+          </div>
+
+          <div class="ab-skill reveal">
+            <p class="ab-skill__num">04</p>
+            <h3 class="ab-skill__name">Creative Direction</h3>
+          </div>
+          <div class="ab-skill reveal reveal-delay-1">
+            <p class="ab-skill__num">05</p>
+            <h3 class="ab-skill__name">Rendering</h3>
+          </div>
+          <div class="ab-skill reveal reveal-delay-2">
+            <p class="ab-skill__num">06</p>
+            <h3 class="ab-skill__name">Photography</h3>
+          </div>
+
+          <div class="ab-skill reveal">
+            <p class="ab-skill__num">07</p>
+            <h3 class="ab-skill__name">Research</h3>
+          </div>
+          <div class="ab-skill reveal reveal-delay-1">
+            <p class="ab-skill__num">08</p>
+            <h3 class="ab-skill__name">Visual Storytelling</h3>
+          </div>
+          <div class="ab-skill reveal reveal-delay-2">
+            <p class="ab-skill__num">09</p>
+            <h3 class="ab-skill__name">Prototype Development</h3>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Closing
+         ============================================================ -->
+    <section class="ab-close">
+      <div class="ab-close__inner reveal">
+
+        <span class="ab-close__eyebrow">Let's Work</span>
+
+        <h2 class="ab-close__statement">
+          INTERESTED IN PROJECTS<br>
+          THAT FEEL <em>WORTH MAKING.</em>
+        </h2>
+
+        <p class="ab-close__sub">
+          Always open to work where good design actually changes the experience,
+          for the person using it and not just the person presenting it.
+        </p>
+
+        <a href="mailto:kjoboom@gmail.com" class="ab-close__cta">
+          Get in touch <span class="ab-close__arrow">→</span>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ============================================================
+       Footer
+       ============================================================ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__name">Portfolio 2026</span>
+      <span class="footer__copy">Industrial &amp; Product Design</span>
+    </div>
+  </footer>
+
+
+  <script>
+    // Nav scroll state
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 24);
+    }, { passive: true });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('.nav__link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+      });
+    });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(el => revealObserver.observe(el));
+  </script>
+
+</body>
+</html>

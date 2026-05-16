@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pure Mountain Fun — K.O. Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/project.css">
+  <style>
+    /* ============================================================
+       Pure Mountain Fun — Page-Specific Styles
+       ============================================================ */
+
+    /* Hero — stronger left-column scrim so text reads over the light image */
+    .panel__overlay--hero {
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.80) 0%,
+        rgba(0, 0, 0, 0.55) 35%,
+        rgba(0, 0, 0, 0.12) 62%,
+        rgba(0, 0, 0, 0)    80%
+      );
+    }
+
+    /* Hero panel — allow content to breathe on tall pages */
+    #panel-hero {
+      height: auto;
+      min-height: 100vh;
+    }
+
+    /* Slightly smaller title so 3-line stack fits the hero */
+    #panel-hero .panel__title {
+      font-size: clamp(52px, 7.5vw, 104px);
+    }
+
+    /* Hero intro body text */
+    .panel__intro {
+      font-size: clamp(13px, 1.3vw, 16px);
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 520px;
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s var(--ease-out) 0.3s, transform 0.7s var(--ease-out) 0.3s;
+    }
+    .panel.is-active .panel__intro {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero metadata grid */
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 0;
+      margin-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      width: fit-content;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s var(--ease-out) 0.48s, transform 0.7s var(--ease-out) 0.48s;
+    }
+    .panel.is-active .hero-meta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-meta__item {
+      padding-right: 32px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hero-meta__item:not(:first-child) { padding-left: 32px; }
+    .hero-meta__item:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .hero-meta__label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.28);
+      margin-bottom: 7px;
+    }
+
+    .hero-meta__value {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       Split — text + image
+       ============================================================ */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 72vh;
+    }
+
+    .split__text {
+      background: #111111;
+      padding: clamp(64px, 9vh, 120px) var(--pad);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .split__text .panel__eyebrow { margin-bottom: 20px; }
+    .split__text .panel__heading { margin-bottom: 32px; }
+
+    .split.is-active .panel__eyebrow,
+    .split.is-active .panel__heading,
+    .split.is-active .panel__body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Process pillar list */
+    .process-list {
+      list-style: none;
+    }
+
+    .process-list li {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1.2vw, 15px);
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 17px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+    }
+
+    .process-list li:first-child { border-top: 1px solid rgba(255, 255, 255, 0.06); }
+
+    .process-list li::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 10px;
+    }
+
+    .split.is-active .process-list li:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.10s; }
+    .split.is-active .process-list li:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.18s; }
+    .split.is-active .process-list li:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.26s; }
+    .split.is-active .process-list li:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.34s; }
+    .split.is-active .process-list li:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.42s; }
+
+    .split__image {
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+      min-height: 480px;
+    }
+
+    .split__img-bg {
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transform: scale(1.0);
+      transition: transform 10s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .split.is-active .split__img-bg { transform: scale(1.05); }
+
+    /* ============================================================
+       Image Pair — side by side
+       ============================================================ */
+    .img-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      height: 80vh;
+    }
+
+    .img-pair__col {
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .img-pair__bg {
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transform: scale(1.0);
+      transition: transform 10s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .img-pair.is-active .img-pair__bg { transform: scale(1.05); }
+
+    /* ============================================================
+       Award / Outcome Section
+       ============================================================ */
+    .award-section {
+      background: #0d0d0d;
+      padding: clamp(80px, 10vh, 140px) var(--pad);
+    }
+
+    .award-section__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .award-bar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 52px;
+    }
+
+    .award-bar__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .award-bar__rule {
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .award-bar__tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.22);
+      white-space: nowrap;
+    }
+
+    .award-heading {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5.5vw, 88px);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: white;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+    }
+
+    .award-heading em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .award-section.is-active .award-heading {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .award-body {
+      font-size: clamp(14px, 1.4vw, 17px);
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 560px;
+      margin-bottom: 64px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s var(--ease-out) 0.15s, transform 0.7s var(--ease-out) 0.15s;
+    }
+
+    .award-section.is-active .award-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stats bar */
+    .award-stats {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 44px;
+      width: fit-content;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s var(--ease-out) 0.28s, transform 0.7s var(--ease-out) 0.28s;
+    }
+
+    .award-section.is-active .award-stats {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .award-stat {
+      padding-right: 56px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .award-stat:not(:first-child) { padding-left: 56px; }
+    .award-stat:last-child { border-right: none; }
+
+    .award-stat__num {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(44px, 5vw, 80px);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: white;
+    }
+
+    .award-stat:nth-child(3) .award-stat__num { color: var(--accent); }
+
+    .award-stat__label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.28);
+      margin-top: 10px;
+    }
+
+    /* ============================================================
+       Responsive
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .hero-meta {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: auto;
+      }
+      .hero-meta__item,
+      .hero-meta__item:not(:first-child),
+      .hero-meta__item:last-child {
+        padding: 0;
+        border: none;
+      }
+
+      .split { grid-template-columns: 1fr; }
+      .split__image { min-height: 360px; }
+
+      .award-stat { padding-right: 36px; }
+      .award-stat:not(:first-child) { padding-left: 36px; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-meta { grid-template-columns: 1fr; }
+
+      .img-pair { grid-template-columns: 1fr; height: auto; }
+      .img-pair__col { height: 60vw; }
+
+      .award-stats {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+      }
+      .award-stat,
+      .award-stat:not(:first-child),
+      .award-stat:last-child {
+        padding: 24px 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .award-stat:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       Navigation
+       ============================================================ -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="../../index.html" class="nav__logo">K.O.</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../../index.html" class="nav__link">Home</a></li>
+        <li><a href="../index.html" class="nav__link">Products</a></li>
+        <li><a href="../../ux/index.html" class="nav__link">UX</a></li>
+        <li><a href="../../about/index.html" class="nav__link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       01 — Hero
+       ============================================================ -->
+  <section class="panel" id="panel-hero">
+    <div class="panel__bg" style="background-image: url('images/PMF/Main.png'); background-position: center 44%;"></div>
+    <div class="panel__overlay panel__overlay--bottom"></div>
+    <div class="panel__overlay panel__overlay--hero"></div>
+    <div class="panel__content">
+      <span class="panel__eyebrow">Sponsored Design Challenge — 2025</span>
+      <h1 class="panel__title">Pure<br>Mountain<br>Fun</h1>
+      <span class="panel__subtitle">Product Design &nbsp;/&nbsp; Team Project &nbsp;/&nbsp; Experience Design</span>
+      <p class="panel__intro">
+        Developed during a one-week sponsored design challenge, Pure Mountain Fun explored how physical interaction, outdoor activity, and playful competition could come together through a modular product experience. Competing against more than 200 participants, our team placed 2nd overall.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Category</span>
+          <span class="hero-meta__value">Product Design<br>Team Project</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Timeline</span>
+          <span class="hero-meta__value">1 Week<br>Design Sprint</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Outcome</span>
+          <span class="hero-meta__value">2nd Place<br>Overall</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Focus</span>
+          <span class="hero-meta__value">Outdoor Interaction<br>Play / Experience</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Overview
+       ============================================================ -->
+  <div class="text-block" id="text-overview">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">The Challenge</span>
+      <h2 class="panel__heading">One week. One brief. No shortcuts.</h2>
+      <p class="panel__body">
+        Pure Mountain Fun was a sponsored design sprint that challenged teams to develop a complete product and experience concept covering research, ideation, prototyping, and presentation, all in seven days. That kind of timeline doesn't leave much room to second-guess. You make a call and you build from it.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Image: 1.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-1">
+    <div class="panel__bg" style="background-image: url('images/PMF/1.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Image: 3.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-2">
+    <div class="panel__bg" style="background-image: url('images/PMF/3.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Context
+       ============================================================ -->
+  <div class="text-block" id="text-context">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">Context</span>
+      <h2 class="panel__heading">Speed as a design constraint.</h2>
+      <p class="panel__body">
+        With only one week to research, ideate, prototype, and present, the project focused heavily on rapid collaboration and clear communication. The challenge pushed our team to make decisions quickly while still developing a concept that felt cohesive, engaging, and visually compelling.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Split — Process pillars + image
+       ============================================================ -->
+  <div class="split" id="split-process">
+    <div class="split__text">
+      <span class="panel__eyebrow">Process</span>
+      <h2 class="panel__heading">How the week unfolded.</h2>
+      <ul class="process-list">
+        <li>Collaborative ideation — open sessions to surface every direction fast</li>
+        <li>Rapid concept sketching — dozens of directions roughed in the first two days</li>
+        <li>Team alignment — converging on a single strong concept with clear rationale</li>
+        <li>Prototype development — physical and digital models to pressure-test the idea</li>
+        <li>Presentation prep — tight visual narrative built for competition under real time pressure</li>
+      </ul>
+    </div>
+    <div class="split__image">
+      <div class="split__img-bg" style="background-image: url('images/PMF/4.png');"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Ideation text
+       ============================================================ -->
+  <div class="text-block" id="text-ideation">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">Ideation</span>
+      <h2 class="panel__heading">Quantity first. Quality followed.</h2>
+      <p class="panel__body">
+        The team committed to a generate-first approach: sketch fast, explore broadly, and make deliberate cuts once the strongest directions emerged. Speed didn't compromise quality; it clarified it.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Images: 5–11 — one per scroll section -->
+  <section class="panel panel--contain panel--light-bg" id="panel-5">
+    <div class="panel__bg" style="background-image: url('images/PMF/5.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="panel panel--contain panel--light-bg" id="panel-6">
+    <div class="panel__bg" style="background-image: url('images/PMF/6.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="panel panel--contain panel--light-bg" id="panel-7">
+    <div class="panel__bg" style="background-image: url('images/PMF/7.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="panel panel--contain panel--light-bg" id="panel-8">
+    <div class="panel__bg" style="background-image: url('images/PMF/8.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="panel panel--contain panel--light-bg" id="panel-9">
+    <div class="panel__bg" style="background-image: url('images/PMF/9.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="panel panel--contain panel--light-bg" id="panel-10">
+    <div class="panel__bg" style="background-image: url('images/PMF/10.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="panel panel--contain panel--light-bg" id="panel-11">
+    <div class="panel__bg" style="background-image: url('images/PMF/11.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Design Direction text
+       ============================================================ -->
+  <div class="text-block" id="text-direction">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">Design Direction</span>
+      <h2 class="panel__heading">Modular. Tactile. Outdoor-ready.</h2>
+      <p class="panel__body">
+        The concept centered on a modular product system designed for outdoor play and physical interaction. Every decision about form, material, and assembly logic was driven by the experience of use in motion, in the mountains, with other people. Tactile, playful, and deliberately incomplete on its own.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Image: 12.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-12">
+    <div class="panel__bg" style="background-image: url('images/PMF/12.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Image Pair — 13 + 14
+       ============================================================ -->
+  <div class="img-pair" id="img-pair-1">
+    <div class="img-pair__col">
+      <div class="img-pair__bg" style="background-image: url('images/PMF/13.png');"></div>
+    </div>
+    <div class="img-pair__col">
+      <div class="img-pair__bg" style="background-image: url('images/PMF/14.png');"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Award / Outcome Section
+       ============================================================ -->
+  <section class="award-section" id="award-section">
+    <div class="award-section__inner">
+      <div class="award-bar">
+        <span class="award-bar__label">Outcome</span>
+        <span class="award-bar__rule"></span>
+        <span class="award-bar__tag">Competition Result</span>
+      </div>
+      <h2 class="award-heading">
+        Out of <em>200+</em> teams.<br>We placed second.
+      </h2>
+      <p class="award-body">
+        The project was awarded 2nd place for its combination of strong visual identity, collaborative execution, and an engaging product experience that felt genuinely connected to the brief. This project reinforced how quickly strong ideas can develop when collaboration, rapid iteration, and clear storytelling come together.
+      </p>
+      <div class="award-stats">
+        <div class="award-stat">
+          <span class="award-stat__num">200+</span>
+          <span class="award-stat__label">Participants</span>
+        </div>
+        <div class="award-stat">
+          <span class="award-stat__num">7</span>
+          <span class="award-stat__label">Day Sprint</span>
+        </div>
+        <div class="award-stat">
+          <span class="award-stat__num">2nd</span>
+          <span class="award-stat__label">Place Overall</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Closing Panel — 15.png
+       ============================================================ -->
+  <section class="panel panel--dark-bg panel--close" id="panel-closing">
+    <div class="panel__bg panel__bg--soft" style="background-image: url('images/PMF/15.png');"></div>
+    <div class="panel__overlay panel__overlay--full"></div>
+    <div class="panel__content">
+      <p class="panel__tagline">One brief.<br>One week.<br><em>Second place.</em></p>
+      <p class="panel__body">
+        Built in seven days. Competed against two hundred teams. The mountain was steep — that was the whole point.
+      </p>
+      <a href="../index.html" class="panel__back">
+        <span class="panel__back-arrow">←</span> Back to Products
+      </a>
+    </div>
+  </section>
+
+  <script>
+    /* Navigation scroll state */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 24);
+    }, { passive: true });
+
+    /* Mobile nav toggle */
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+    });
+
+    navLinks.querySelectorAll('.nav__link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+      });
+    });
+
+    /* Observer — activates panels, text blocks, split, img-pair, award section */
+    const observables = document.querySelectorAll(
+      '.panel, .text-block, .split, .img-pair, .award-section'
+    );
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('is-active', entry.isIntersecting);
+      });
+    }, { threshold: 0.15 });
+
+    observables.forEach(el => observer.observe(el));
+
+    /* Activate hero immediately */
+    document.getElementById('panel-hero').classList.add('is-active');
+
+  </script>
+
+</body>
+</html>

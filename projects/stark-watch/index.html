@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stark Watch — K.O. Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/project.css">
+  <style>
+    /* ============================================================
+       Stark Watch — Page Styles
+       ============================================================ */
+
+    /* ---- Hero ---- */
+    .sw-hero {
+      background: #0a0a0a;
+      overflow: hidden;
+      min-height: 680px;
+    }
+
+    /* Blueprint SVG — centered in hero */
+    .sw-hero__blueprint {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .sw-hero__svg {
+      width: min(88vmin, 820px);
+      height: auto;
+      opacity: 0.2;
+    }
+
+    /* Scan line */
+    .sw-hero__scan {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.06) 30%,
+        rgba(255, 255, 255, 0.06) 70%,
+        transparent 100%
+      );
+      animation: swScan 14s linear infinite;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Left gradient — keeps text readable */
+    .sw-hero__overlay-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(10, 10, 10, 0.96) 0%,
+        rgba(10, 10, 10, 0.72) 36%,
+        rgba(10, 10, 10, 0.18) 64%,
+        rgba(10, 10, 10, 0)    84%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Bottom gradient */
+    .sw-hero__overlay-bottom {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10, 10, 10, 0.88) 0%,
+        rgba(10, 10, 10, 0.32) 32%,
+        rgba(10, 10, 10, 0)    58%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Status in orange */
+    .hero-meta__value--accent { color: var(--accent); }
+
+    /* Hero intro paragraph */
+    .sw-intro {
+      font-size: clamp(13px, 1.3vw, 16px);
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.58);
+      max-width: 520px;
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s var(--ease-out) 0.3s, transform 0.7s var(--ease-out) 0.3s;
+    }
+
+    .sw-hero.is-active .sw-intro {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero metadata grid */
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 0;
+      margin-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      width: fit-content;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s var(--ease-out) 0.48s, transform 0.7s var(--ease-out) 0.48s;
+    }
+
+    .sw-hero.is-active .hero-meta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-meta__item {
+      padding-right: 32px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hero-meta__item:not(:first-child) { padding-left: 32px; }
+    .hero-meta__item:last-child { border-right: none; padding-right: 0; }
+
+    .hero-meta__label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.28);
+      margin-bottom: 7px;
+    }
+
+    .hero-meta__value {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.58);
+      line-height: 1.55;
+    }
+
+    /* ---- SVG animation classes ---- */
+    .sw-hand {
+      transform-origin: 450px 450px;
+      animation: swHandSpin 48s linear infinite;
+    }
+
+    .sw-hand-sub {
+      transform-origin: 450px 622px;
+      animation: swHandSpin 9s linear infinite;
+    }
+
+    .sw-ring-pulse {
+      animation: swRingPulse 5.5s ease-in-out infinite;
+    }
+
+    .sw-glow-drift {
+      animation: swGlowDrift 8s ease-in-out infinite;
+    }
+
+    .sw-pip-pulse {
+      animation: swPipPulse 2.8s ease-in-out infinite;
+    }
+
+    /* ---- Concept Section ---- */
+    .sw-concept {
+      background: #0d0d0d;
+      padding: clamp(100px, 12vh, 160px) var(--pad);
+    }
+
+    .sw-concept__inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .sw-concept__statement {
+      font-family: var(--font-display);
+      font-size: clamp(60px, 7.5vw, 116px);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: white;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    }
+
+    .sw-concept__statement em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .sw-concept.is-active .sw-concept__statement {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sw-concept__right { padding-top: 8px; }
+
+    .sw-concept__label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s var(--ease-out) 0.1s, transform 0.7s var(--ease-out) 0.1s;
+    }
+
+    .sw-concept.is-active .sw-concept__label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sw-concept__body {
+      font-size: clamp(14px, 1.35vw, 16px);
+      font-weight: 300;
+      line-height: 1.88;
+      color: rgba(255, 255, 255, 0.52);
+      margin-bottom: 22px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s var(--ease-out) 0.2s, transform 0.7s var(--ease-out) 0.2s;
+    }
+
+    .sw-concept__body + .sw-concept__body { transition-delay: 0.32s; }
+    .sw-concept__body:last-child { margin-bottom: 0; }
+
+    .sw-concept.is-active .sw-concept__body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- Features Section ---- */
+    .sw-features {
+      background: #f5f5f5;
+      padding: clamp(80px, 10vh, 120px) var(--pad);
+    }
+
+    .sw-features__inner {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .sw-features__header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 56px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+
+    .sw-features.is-active .sw-features__header {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sw-features__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .sw-features__title {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 72px);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: #0a0a0a;
+    }
+
+    .sw-features__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid #d8d8d8;
+      border-left: 1px solid #d8d8d8;
+    }
+
+    .sw-feature {
+      padding: 32px 28px 36px;
+      border-bottom: 1px solid #d8d8d8;
+      border-right: 1px solid #d8d8d8;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        background  0.3s  var(--ease-out),
+        opacity     0.55s var(--ease-out),
+        transform   0.55s var(--ease-out);
+    }
+
+    .sw-features.is-active .sw-feature:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.04s; }
+    .sw-features.is-active .sw-feature:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.09s; }
+    .sw-features.is-active .sw-feature:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.14s; }
+    .sw-features.is-active .sw-feature:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.19s; }
+    .sw-features.is-active .sw-feature:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.24s; }
+    .sw-features.is-active .sw-feature:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.29s; }
+    .sw-features.is-active .sw-feature:nth-child(7) { opacity: 1; transform: none; transition-delay: 0.34s; }
+    .sw-features.is-active .sw-feature:nth-child(8) { opacity: 1; transform: none; transition-delay: 0.39s; }
+
+    /* Orange accent line on hover */
+    .sw-feature::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.45s var(--ease-out);
+    }
+
+    .sw-feature:hover::after { width: 100%; }
+    .sw-feature:hover { background: rgba(250, 80, 0, 0.03); }
+
+    .sw-feature__num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: #aaaaaa;
+      margin-bottom: 14px;
+    }
+
+    .sw-feature__name {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 1.8vw, 24px);
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      color: #0a0a0a;
+      margin-bottom: 12px;
+      transition: color 0.22s;
+    }
+
+    .sw-feature:hover .sw-feature__name { color: var(--accent); }
+
+    .sw-feature__desc {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.72;
+      color: #666666;
+    }
+
+    /* ---- Closing / Coming Soon ---- */
+    .sw-closing {
+      position: relative;
+      background: #0a0a0a;
+      padding: clamp(100px, 14vh, 180px) var(--pad);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Animated technical overlay */
+    .sw-closing__overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .sw-closing__overlay svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .sw-closing__content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .sw-closing__eyebrow {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+
+    .sw-closing.is-active .sw-closing__eyebrow {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sw-closing__title {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 8vw, 128px);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: white;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s var(--ease-out) 0.1s, transform 0.9s var(--ease-out) 0.1s;
+    }
+
+    .sw-closing__title em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .sw-closing.is-active .sw-closing__title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sw-closing__body {
+      font-size: clamp(14px, 1.4vw, 16px);
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(255, 255, 255, 0.42);
+      max-width: 480px;
+      margin: 44px auto 20px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s var(--ease-out) 0.25s, transform 0.7s var(--ease-out) 0.25s;
+    }
+
+    .sw-closing.is-active .sw-closing__body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sw-closing__soon {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.18);
+      margin-bottom: 56px;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease-out) 0.38s;
+    }
+
+    .sw-closing.is-active .sw-closing__soon { opacity: 1; }
+
+    .sw-closing__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: white;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 6px;
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease-out) 0.48s, color 0.25s, border-color 0.25s;
+    }
+
+    .sw-closing.is-active .sw-closing__back { opacity: 1; }
+    .sw-closing__back:hover { color: var(--accent); border-color: var(--accent); }
+
+    .sw-closing__arrow { transition: transform 0.3s var(--ease-out); }
+    .sw-closing__back:hover .sw-closing__arrow { transform: translateX(-5px); }
+
+    /* Closing overlay animation */
+    .sw-closing-glow {
+      animation: swClosingGlow 10s ease-in-out infinite;
+    }
+
+    /* ============================================================
+       Keyframes
+       ============================================================ */
+    @keyframes swScan {
+      0%   { top: -1px;  opacity: 0; }
+      3%   { opacity: 1; }
+      97%  { opacity: 1; }
+      100% { top: 100%;  opacity: 0; }
+    }
+
+    @keyframes swHandSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes swRingPulse {
+      0%, 100% { opacity: 0.14; }
+      50%       { opacity: 0.28; }
+    }
+
+    @keyframes swGlowDrift {
+      0%, 100% { transform: translate(0px, 0px)    scale(1);    }
+      33%       { transform: translate(18px, -14px) scale(1.08); }
+      66%       { transform: translate(-12px, 9px)  scale(0.94); }
+    }
+
+    @keyframes swPipPulse {
+      0%, 100% { opacity: 0.68; transform: scale(1); }
+      50%       { opacity: 0.18; transform: scale(0.62); }
+    }
+
+    @keyframes swClosingGlow {
+      0%, 100% { transform: translate(0px, 0px)    scale(1);    opacity: 1; }
+      50%       { transform: translate(28px, -18px) scale(1.14); opacity: 0.6; }
+    }
+
+    /* ============================================================
+       Responsive
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .hero-meta {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: auto;
+      }
+      .hero-meta__item,
+      .hero-meta__item:not(:first-child),
+      .hero-meta__item:last-child {
+        padding: 0;
+        border: none;
+      }
+
+      .sw-concept__inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .sw-features__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-meta { grid-template-columns: 1fr; }
+      .sw-features__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       Navigation
+       ============================================================ -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="../../index.html" class="nav__logo">K.O.</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../../index.html" class="nav__link">Home</a></li>
+        <li><a href="../index.html" class="nav__link">Products</a></li>
+        <li><a href="../../ux/index.html" class="nav__link">UX</a></li>
+        <li><a href="../../about/index.html" class="nav__link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       Hero — animated blueprint
+       ============================================================ -->
+  <section class="panel sw-hero" id="sw-hero">
+
+    <!-- Watch blueprint SVG -->
+    <div class="sw-hero__blueprint" aria-hidden="true">
+      <svg
+        viewBox="0 0 900 900"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="sw-hero__svg"
+      >
+        <!-- Ambient orange glow drift -->
+        <g class="sw-glow-drift">
+          <ellipse cx="458" cy="442" rx="310" ry="268" fill="rgba(250,80,0,0.045)"/>
+        </g>
+
+        <!-- Subtle center cross guides -->
+        <line x1="90"  y1="450" x2="810" y2="450" stroke="white" stroke-width="0.4" opacity="0.04"/>
+        <line x1="450" y1="90"  x2="450" y2="810" stroke="white" stroke-width="0.4" opacity="0.04"/>
+
+        <!-- Corner registration marks -->
+        <!-- Top-left -->
+        <line x1="118" y1="136" x2="162" y2="136" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+        <line x1="118" y1="136" x2="118" y2="180" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+        <!-- Top-right -->
+        <line x1="782" y1="136" x2="738" y2="136" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+        <line x1="782" y1="136" x2="782" y2="180" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+        <!-- Bottom-left -->
+        <line x1="118" y1="764" x2="162" y2="764" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+        <line x1="118" y1="764" x2="118" y2="720" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+        <!-- Bottom-right -->
+        <line x1="782" y1="764" x2="738" y2="764" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+        <line x1="782" y1="764" x2="782" y2="720" stroke="#FA5000" stroke-width="0.9" opacity="0.38"/>
+
+        <!-- Watch case outline (subtle) -->
+        <rect x="284" y="176" width="332" height="418" rx="88"
+          fill="none" stroke="white" stroke-width="0.8" opacity="0.06"/>
+
+        <!-- Crown -->
+        <rect x="615" y="380" width="26" height="82" rx="5"
+          fill="none" stroke="white" stroke-width="0.7" opacity="0.06"/>
+
+        <!-- Strap lug lines -->
+        <line x1="330" y1="178" x2="316" y2="148" stroke="white" stroke-width="0.7" opacity="0.05"/>
+        <line x1="570" y1="178" x2="584" y2="148" stroke="white" stroke-width="0.7" opacity="0.05"/>
+        <line x1="330" y1="593" x2="316" y2="623" stroke="white" stroke-width="0.7" opacity="0.05"/>
+        <line x1="570" y1="593" x2="584" y2="623" stroke="white" stroke-width="0.7" opacity="0.05"/>
+
+        <!-- Outer bezel ring — pulsing -->
+        <circle cx="450" cy="450" r="250" fill="none" stroke="white" stroke-width="1.2" class="sw-ring-pulse"/>
+
+        <!-- Chapter ring -->
+        <circle cx="450" cy="450" r="232" fill="none" stroke="white" stroke-width="0.5" opacity="0.07"/>
+
+        <!-- Inner dial ring -->
+        <circle cx="450" cy="450" r="204" fill="none" stroke="white" stroke-width="0.6" opacity="0.09"/>
+
+        <!-- Major hour markers (12, 3, 6, 9) — 28px ticks -->
+        <line x1="450" y1="200" x2="450" y2="228" stroke="white" stroke-width="3"   opacity="0.44"/>
+        <line x1="700" y1="450" x2="672" y2="450" stroke="white" stroke-width="3"   opacity="0.44"/>
+        <line x1="450" y1="700" x2="450" y2="672" stroke="white" stroke-width="3"   opacity="0.44"/>
+        <line x1="200" y1="450" x2="228" y2="450" stroke="white" stroke-width="3"   opacity="0.44"/>
+
+        <!-- Minor hour markers — 1,2,4,5,7,8,10,11 o'clock (12px ticks at r=250 to r=238) -->
+        <line x1="575" y1="233" x2="569" y2="244" stroke="white" stroke-width="1.2" opacity="0.18"/>
+        <line x1="667" y1="325" x2="657" y2="331" stroke="white" stroke-width="1.2" opacity="0.18"/>
+        <line x1="667" y1="575" x2="657" y2="569" stroke="white" stroke-width="1.2" opacity="0.18"/>
+        <line x1="575" y1="667" x2="569" y2="657" stroke="white" stroke-width="1.2" opacity="0.18"/>
+        <line x1="325" y1="667" x2="331" y2="657" stroke="white" stroke-width="1.2" opacity="0.18"/>
+        <line x1="233" y1="575" x2="243" y2="569" stroke="white" stroke-width="1.2" opacity="0.18"/>
+        <line x1="233" y1="325" x2="243" y2="331" stroke="white" stroke-width="1.2" opacity="0.18"/>
+        <line x1="325" y1="233" x2="331" y2="243" stroke="white" stroke-width="1.2" opacity="0.18"/>
+
+        <!-- 12 o'clock orange accent pip -->
+        <circle cx="450" cy="203" r="7" fill="#FA5000" opacity="0.65" class="sw-pip-pulse"/>
+
+        <!-- Animated hands (rotate around dial center 450,450) -->
+        <g class="sw-hand">
+          <!-- Minute hand -->
+          <line x1="450" y1="450" x2="450" y2="230"
+            stroke="white" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
+          <!-- Hour hand (slightly angled) -->
+          <line x1="450" y1="450" x2="480" y2="322"
+            stroke="white" stroke-width="2.4" opacity="0.36" stroke-linecap="round"/>
+        </g>
+
+        <!-- Center jewel -->
+        <circle cx="450" cy="450" r="10" fill="none" stroke="white" stroke-width="1" opacity="0.2"/>
+        <circle cx="450" cy="450" r="4.5" fill="#FA5000" opacity="0.72"/>
+
+        <!-- Sub-dial at 6 o'clock -->
+        <circle cx="450" cy="622" r="58" fill="none" stroke="white" stroke-width="0.7" opacity="0.09"/>
+        <circle cx="450" cy="622" r="42" fill="none" stroke="white" stroke-width="0.4" opacity="0.06"/>
+        <!-- Sub-dial cardinal ticks -->
+        <line x1="450" y1="565" x2="450" y2="572" stroke="white" stroke-width="0.9" opacity="0.14"/>
+        <line x1="507" y1="622" x2="500" y2="622" stroke="white" stroke-width="0.9" opacity="0.14"/>
+        <line x1="450" y1="679" x2="450" y2="672" stroke="white" stroke-width="0.9" opacity="0.14"/>
+        <line x1="393" y1="622" x2="400" y2="622" stroke="white" stroke-width="0.9" opacity="0.14"/>
+        <!-- Sub-dial hand -->
+        <g class="sw-hand-sub">
+          <line x1="450" y1="622" x2="450" y2="579"
+            stroke="white" stroke-width="1" opacity="0.24" stroke-linecap="round"/>
+        </g>
+        <circle cx="450" cy="622" r="3.5" fill="white" opacity="0.16"/>
+
+        <!-- Dimension bracket — left side -->
+        <line x1="142" y1="200" x2="142" y2="700" stroke="#FA5000" stroke-width="0.7" opacity="0.36"/>
+        <line x1="138" y1="200" x2="146" y2="200" stroke="#FA5000" stroke-width="0.7" opacity="0.36"/>
+        <line x1="138" y1="700" x2="146" y2="700" stroke="#FA5000" stroke-width="0.7" opacity="0.36"/>
+        <text
+          transform="rotate(-90 124 450)"
+          x="124" y="450"
+          font-family="DM Mono, monospace"
+          font-size="11" fill="#FA5000" opacity="0.42"
+          text-anchor="middle" letter-spacing="0.1em"
+        >44MM</text>
+
+        <!-- Right dashed notation -->
+        <line x1="772" y1="200" x2="772" y2="700"
+          stroke="#FA5000" stroke-width="0.5" opacity="0.18" stroke-dasharray="3 7"/>
+        <text x="780" y="214"
+          font-family="DM Mono, monospace"
+          font-size="10" fill="#FA5000" opacity="0.28"
+          letter-spacing="0.07em"
+        >V.01</text>
+
+        <!-- Bottom reference text -->
+        <text
+          x="450" y="848"
+          font-family="DM Mono, monospace"
+          font-size="11" fill="white" opacity="0.06"
+          text-anchor="middle" letter-spacing="0.2em"
+        >STARK — REF 01 — VARG ECOSYSTEM</text>
+
+      </svg>
+    </div>
+
+    <!-- Scan line -->
+    <div class="sw-hero__scan"></div>
+
+    <!-- Gradient overlays -->
+    <div class="sw-hero__overlay-left"></div>
+    <div class="sw-hero__overlay-bottom"></div>
+
+    <!-- Content -->
+    <div class="panel__content">
+      <span class="panel__eyebrow">Product Design / UX Concept</span>
+      <h1 class="panel__title">Stark<br>Watch</h1>
+      <span class="panel__subtitle">Wearable Interface Concept for the Stark Future VARG</span>
+      <p class="sw-intro">
+        Designed as an alternative to traditional mounted dashboards, the Stark Watch explores how rider telemetry, navigation, and bike information could move to a dedicated wearable experience built specifically for off-road riding.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Category</span>
+          <span class="hero-meta__value">Product Design<br>UX Concept</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Focus</span>
+          <span class="hero-meta__value">Wearable Interface<br>Design</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Designed For</span>
+          <span class="hero-meta__value">Stark Future<br>VARG</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Status</span>
+          <span class="hero-meta__value hero-meta__value--accent">In Development</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Concept
+       ============================================================ -->
+  <section class="sw-concept" id="sw-concept">
+    <div class="sw-concept__inner">
+
+      <p class="sw-concept__statement">
+        BUILT<br>FOR<br>THE <em>RIDER.</em>
+      </p>
+
+      <div class="sw-concept__right">
+        <span class="sw-concept__label">Concept</span>
+        <p class="sw-concept__body">
+          The idea came from noticing riders remove their phones from the bike mount entirely before riding, leaving them without easy access to live ride data. Current setups depend heavily on mobile devices, but phones are not purpose-built for aggressive off-road use. They can feel fragile, distracting, and disconnected from the machine.
+        </p>
+        <p class="sw-concept__body">
+          The Stark Watch explores a dedicated wearable interface that keeps essential ride information accessible both on and off the bike. Speed, battery state, ride mode, and navigation cues — designed to be glanceable, durable, and built around the VARG ecosystem from the start.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Features / Design Thinking
+       ============================================================ -->
+  <section class="sw-features" id="sw-features">
+    <div class="sw-features__inner">
+
+      <header class="sw-features__header">
+        <span class="sw-features__eyebrow">Design Thinking</span>
+        <h2 class="sw-features__title">What It Explores</h2>
+      </header>
+
+      <div class="sw-features__grid">
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">01</p>
+          <h3 class="sw-feature__name">Speed + Battery Monitoring</h3>
+          <p class="sw-feature__desc">Real-time readout of velocity and charge state designed to be read in motion, at a glance.</p>
+        </div>
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">02</p>
+          <h3 class="sw-feature__name">Ride Mode Switching</h3>
+          <p class="sw-feature__desc">Access and adjust ride modes from the wrist without reaching for the bike interface mid-session.</p>
+        </div>
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">03</p>
+          <h3 class="sw-feature__name">Navigation Cues</h3>
+          <p class="sw-feature__desc">Simplified directional prompts for trail navigation without the distraction of a full map view.</p>
+        </div>
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">04</p>
+          <h3 class="sw-feature__name">Bike Telemetry</h3>
+          <p class="sw-feature__desc">Key performance data from the VARG system surfaced in a form factor that stays with the rider.</p>
+        </div>
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">05</p>
+          <h3 class="sw-feature__name">Haptic Alerts</h3>
+          <p class="sw-feature__desc">Critical notifications delivered through vibration so riders stay informed without looking down.</p>
+        </div>
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">06</p>
+          <h3 class="sw-feature__name">Weather-Resistant Build</h3>
+          <p class="sw-feature__desc">Built for the conditions of off-road riding. Mud, dust, and water are part of the environment.</p>
+        </div>
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">07</p>
+          <h3 class="sw-feature__name">Glove-Friendly Interaction</h3>
+          <p class="sw-feature__desc">Inputs sized and positioned for use with riding gloves on, not just bare hands in a clean room.</p>
+        </div>
+
+        <div class="sw-feature">
+          <p class="sw-feature__num">08</p>
+          <h3 class="sw-feature__name">VARG Ecosystem Integration</h3>
+          <p class="sw-feature__desc">Designed to feel like a natural extension of the Stark Future product family, not a third-party add-on.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Closing / Coming Soon
+       ============================================================ -->
+  <section class="sw-closing" id="sw-closing">
+
+    <!-- Animated technical overlay -->
+    <div class="sw-closing__overlay" aria-hidden="true">
+      <svg viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+
+        <!-- Drifting glow -->
+        <g class="sw-closing-glow">
+          <ellipse cx="600" cy="300" rx="500" ry="210" fill="rgba(250,80,0,0.038)"/>
+        </g>
+
+        <!-- Horizontal guides -->
+        <line x1="0"    y1="148" x2="1200" y2="148" stroke="white" stroke-width="0.35" opacity="0.04"/>
+        <line x1="0"    y1="452" x2="1200" y2="452" stroke="white" stroke-width="0.35" opacity="0.04"/>
+
+        <!-- Vertical guides -->
+        <line x1="296"  y1="0"   x2="296"  y2="600" stroke="white" stroke-width="0.35" opacity="0.03"/>
+        <line x1="904"  y1="0"   x2="904"  y2="600" stroke="white" stroke-width="0.35" opacity="0.03"/>
+
+        <!-- Corner marks -->
+        <line x1="56"  y1="56"  x2="110" y2="56"  stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+        <line x1="56"  y1="56"  x2="56"  y2="110" stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+        <line x1="1144" y1="56"  x2="1090" y2="56"  stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+        <line x1="1144" y1="56"  x2="1144" y2="110" stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+        <line x1="56"  y1="544" x2="110" y2="544" stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+        <line x1="56"  y1="544" x2="56"  y2="490" stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+        <line x1="1144" y1="544" x2="1090" y2="544" stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+        <line x1="1144" y1="544" x2="1144" y2="490" stroke="#FA5000" stroke-width="0.8" opacity="0.28"/>
+
+        <!-- Center crosshair -->
+        <circle cx="600" cy="300" r="28" stroke="#FA5000" stroke-width="0.6" opacity="0.1"/>
+        <line x1="572" y1="300" x2="628" y2="300" stroke="#FA5000" stroke-width="0.5" opacity="0.08"/>
+        <line x1="600" y1="272" x2="600" y2="328" stroke="#FA5000" stroke-width="0.5" opacity="0.08"/>
+
+        <!-- Reference labels -->
+        <text x="65" y="72"
+          font-family="DM Mono, monospace" font-size="8"
+          fill="#FA5000" opacity="0.22" letter-spacing="0.12em"
+        >STARK WATCH / IN DEV</text>
+        <text x="1135" y="72"
+          font-family="DM Mono, monospace" font-size="8"
+          fill="#FA5000" opacity="0.22" letter-spacing="0.12em" text-anchor="end"
+        >REF 01</text>
+      </svg>
+    </div>
+
+    <div class="sw-closing__content">
+      <span class="sw-closing__eyebrow">In Development</span>
+      <p class="sw-closing__title">CASE STUDY<br><em>COMING SOON</em></p>
+      <p class="sw-closing__body">
+        This concept is currently being expanded through interface exploration, rendering development, and ecosystem thinking.
+      </p>
+      <span class="sw-closing__soon">Full case study coming soon</span>
+      <a href="../index.html" class="sw-closing__back">
+        <span class="sw-closing__arrow">←</span> Back to Products
+      </a>
+    </div>
+
+  </section>
+
+  <script>
+    /* Navigation scroll state */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 24);
+    }, { passive: true });
+
+    /* Mobile nav toggle */
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+    });
+
+    navLinks.querySelectorAll('.nav__link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+      });
+    });
+
+    /* Scroll reveal observer */
+    const observables = document.querySelectorAll(
+      '.sw-hero, .sw-concept, .sw-features, .sw-closing'
+    );
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('is-active');
+      });
+    }, { threshold: 0.12 });
+
+    observables.forEach(el => observer.observe(el));
+
+    /* Hero activates immediately */
+    document.getElementById('sw-hero').classList.add('is-active');
+  </script>
+
+</body>
+</html>

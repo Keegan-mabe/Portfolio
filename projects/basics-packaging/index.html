@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basics Packaging — K.O. Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/project.css">
+  <style>
+    /* ============================================================
+       Basics Packaging — Page-Specific Styles
+       ============================================================ */
+
+    /* Hero intro body text */
+    .panel__intro {
+      font-size: clamp(13px, 1.3vw, 16px);
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 480px;
+      margin-top: 18px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s var(--ease-out) 0.3s, transform 0.7s var(--ease-out) 0.3s;
+    }
+    .panel.is-active .panel__intro {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero metadata grid */
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 0;
+      margin-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      width: fit-content;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s var(--ease-out) 0.45s, transform 0.7s var(--ease-out) 0.45s;
+    }
+    .panel.is-active .hero-meta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-meta__item {
+      padding-right: 36px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hero-meta__item:nth-child(2) {
+      padding-left: 36px;
+    }
+    .hero-meta__item:last-child {
+      border-right: none;
+      padding-left: 36px;
+      padding-right: 0;
+    }
+
+    .hero-meta__label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.28);
+      margin-bottom: 7px;
+    }
+
+    .hero-meta__value {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       Research Split — two-column, text + image
+       ============================================================ */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 72vh;
+    }
+
+    .split__text {
+      background: #111111;
+      padding: clamp(64px, 9vh, 120px) var(--pad);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .split__text .panel__eyebrow {
+      margin-bottom: 20px;
+    }
+
+    .split__text .panel__heading {
+      margin-bottom: 32px;
+    }
+
+    /* Insight list */
+    .insight-list {
+      list-style: none;
+    }
+
+    .insight-list li {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1.2vw, 15px);
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+    }
+
+    .insight-list li:first-child {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .insight-list li::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 10px;
+    }
+
+    /* Staggered reveal */
+    .split.is-active .insight-list li:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.10s; }
+    .split.is-active .insight-list li:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.18s; }
+    .split.is-active .insight-list li:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.26s; }
+    .split.is-active .insight-list li:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.34s; }
+    .split.is-active .insight-list li:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.42s; }
+
+    /* Propagate text animation to split context */
+    .split.is-active .panel__eyebrow,
+    .split.is-active .panel__heading,
+    .split.is-active .panel__body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .split__image {
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+      min-height: 480px;
+      cursor: zoom-in;
+    }
+
+    .split__img-bg {
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transform: scale(1.0);
+      transition: transform 10s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .split.is-active .split__img-bg {
+      transform: scale(1.05);
+    }
+
+    /* ============================================================
+       Process Grid — asymmetric 12-column layout
+       ============================================================ */
+    .proc-section {
+      background: #111111;
+    }
+
+    .proc-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      padding: 0 var(--pad) 80px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .proc-cell {
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+      cursor: zoom-in;
+    }
+
+    .proc-cell__bg {
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.75s var(--ease-out);
+    }
+
+    .proc-cell:hover .proc-cell__bg {
+      transform: scale(1.03);
+    }
+
+    /* Row 1 — unequal widths, varying heights */
+    .proc-cell:nth-child(1) { grid-column: 1 / 6;  height: 400px; }
+    .proc-cell:nth-child(2) { grid-column: 6 / 10; height: 400px; }
+    .proc-cell:nth-child(3) { grid-column: 10 / 13; height: 400px; }
+
+    /* Row 2 — three equal columns */
+    .proc-cell:nth-child(4) { grid-column: 1 / 5;  height: 360px; }
+    .proc-cell:nth-child(5) { grid-column: 5 / 9;  height: 360px; }
+    .proc-cell:nth-child(6) { grid-column: 9 / 13; height: 360px; }
+
+    /* Row 3 — one wide, one narrow */
+    .proc-cell:nth-child(7) { grid-column: 1 / 13; height: 320px; }
+
+    /* ============================================================
+       Package Pair — side-by-side contain panels
+       ============================================================ */
+    .pkg-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      height: 80vh;
+    }
+
+    .pkg-pair__col {
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .pkg-pair__bg {
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transform: scale(1.0);
+      transition: transform 10s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .pkg-pair.is-active .pkg-pair__bg {
+      transform: scale(1.05);
+    }
+
+    /* ============================================================
+       IF Poster Section
+       ============================================================ */
+    .poster-section {
+      background: #0d0d0d;
+      padding: clamp(80px, 10vh, 140px) var(--pad);
+    }
+
+    .poster-section__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .poster-section__header {
+      margin-bottom: 56px;
+    }
+
+    .poster-wrap {
+      position: relative;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+
+    .poster-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.75s var(--ease-out);
+    }
+
+    .poster-wrap:hover img {
+      transform: scale(1.015);
+    }
+
+    /* IF eyebrow — accent rule */
+    .if-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .if-eyebrow__text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .if-eyebrow__rule {
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* ============================================================
+       Lightbox
+       ============================================================ */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.94);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease-out);
+      cursor: zoom-out;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox__img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* ============================================================
+       Responsive
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .hero-meta { grid-template-columns: 1fr; gap: 16px; }
+      .hero-meta__item,
+      .hero-meta__item:nth-child(2),
+      .hero-meta__item:last-child {
+        padding-left: 0;
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding-bottom: 14px;
+      }
+      .hero-meta__item:last-child { border-bottom: none; }
+
+      .split { grid-template-columns: 1fr; }
+      .split__image { min-height: 360px; }
+
+      .proc-cell:nth-child(1) { grid-column: 1 / 7; }
+      .proc-cell:nth-child(2) { grid-column: 7 / 13; }
+      .proc-cell:nth-child(3) { grid-column: 1 / 7; }
+      .proc-cell:nth-child(4) { grid-column: 7 / 13; }
+      .proc-cell:nth-child(5) { grid-column: 1 / 7; }
+      .proc-cell:nth-child(6) { grid-column: 7 / 13; }
+      .proc-cell:nth-child(7) { grid-column: 1 / 13; }
+    }
+
+    @media (max-width: 768px) {
+      .proc-grid { padding-bottom: 48px; }
+      .proc-cell:nth-child(n) { grid-column: 1 / -1; height: 260px; }
+
+      .pkg-pair { grid-template-columns: 1fr; height: auto; }
+      .pkg-pair__col { height: 60vw; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       Navigation
+       ============================================================ -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="../../index.html" class="nav__logo">K.O.</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../../index.html" class="nav__link">Home</a></li>
+        <li><a href="../index.html" class="nav__link">Products</a></li>
+        <li><a href="../../ux/index.html" class="nav__link">UX</a></li>
+        <li><a href="../../about/index.html" class="nav__link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       01 — Hero
+       ============================================================ -->
+  <section class="panel" id="panel-hero">
+    <div class="panel__bg" style="background-image: url('images/Basics/1.png');"></div>
+    <div class="panel__overlay panel__overlay--bottom"></div>
+    <div class="panel__content">
+      <span class="panel__eyebrow">Brand &amp; Packaging Design</span>
+      <h1 class="panel__title">Basics<br>Packaging</h1>
+      <span class="panel__subtitle">Packaging Design &nbsp;/&nbsp; Branding &nbsp;/&nbsp; Research</span>
+      <p class="panel__intro">
+        Basics explores how discreet branding and educational packaging can reduce embarrassment and discomfort surrounding hygiene and sexual wellness products for teens and young adults.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Category</span>
+          <span class="hero-meta__value">Packaging Design<br>Branding / Research</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Focus</span>
+          <span class="hero-meta__value">Discreet Educational<br>Systems</span>
+        </div>
+        <div class="hero-meta__item">
+          <span class="hero-meta__label">Timeline</span>
+          <span class="hero-meta__value">4 Weeks</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Overview
+       ============================================================ -->
+  <div class="text-block" id="text-overview">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">Overview</span>
+      <h2 class="panel__heading">Design that disappears.</h2>
+      <p class="panel__body">
+        Basics focused on redesigning the experience around personal care and sexual wellness products that many young adults feel uncomfortable purchasing or talking about. Condoms, pads, tampons, razors. Products that are completely normal parts of everyday life, but whose retail presence often makes them feel anything but.<br><br>
+        Existing packaging in this category is often loud, highly gendered, and visually attention-grabbing. That visual noise adds unnecessary social anxiety around already sensitive experiences. Basics rethinks this through minimal branding, discreet packaging systems, and approachable educational design.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Image: 2.png — first branding visual -->
+  <section class="panel panel--contain panel--light-bg" id="panel-r1">
+    <div class="panel__bg" style="background-image: url('images/Basics/2.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Problem
+       ============================================================ -->
+  <div class="text-block" id="text-problem">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">Problem</span>
+      <h2 class="panel__heading">Loud design in a quiet moment.</h2>
+      <p class="panel__body">
+        The personal care aisle is one of the loudest in retail — bright colors, bold claims, gendered imagery. For a teenager already navigating uncertainty around their body and health, this environment compounds the discomfort rather than easing it.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Process Grid -->
+  <section class="proc-section" id="proc-section">
+    <div class="proc-grid">
+      <div class="proc-cell">
+        <div class="proc-cell__bg" style="background-image: url('images/Basics/15.png');"></div>
+      </div>
+      <div class="proc-cell">
+        <div class="proc-cell__bg" style="background-image: url('images/Basics/21.png');"></div>
+      </div>
+      <div class="proc-cell">
+        <div class="proc-cell__bg" style="background-image: url('images/Basics/24.png');"></div>
+      </div>
+      <div class="proc-cell">
+        <div class="proc-cell__bg" style="background-image: url('images/Basics/25.png');"></div>
+      </div>
+      <div class="proc-cell">
+        <div class="proc-cell__bg" style="background-image: url('images/Basics/26.png');"></div>
+      </div>
+      <div class="proc-cell">
+        <div class="proc-cell__bg" style="background-image: url('images/Basics/27.png');"></div>
+      </div>
+      <div class="proc-cell">
+        <div class="proc-cell__bg" style="background-image: url('images/Basics/28.png');"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Process
+       ============================================================ -->
+  <div class="text-block" id="text-process">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">Process</span>
+      <h2 class="panel__heading">From insight to system.</h2>
+      <p class="panel__body">
+        Research framed the problem. Iteration shaped the solution, working through brand language, typographic systems, structural packaging forms, and educational hierarchy before arriving at a unified, restrained identity.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Research Split
+       ============================================================ -->
+  <div class="split" id="split-research">
+    <div class="split__text">
+      <span class="panel__eyebrow">Research</span>
+      <h2 class="panel__heading">What the data said.</h2>
+      <ul class="insight-list">
+        <li>Teens often avoid asking questions about sexual wellness and hygiene due to embarrassment</li>
+        <li>Current packaging relies heavily on bright colors and highly gendered branding</li>
+        <li>Purchasing these products can create acute anxiety in public retail environments</li>
+        <li>Educational information is often inaccessible, overwhelming, or culturally stigmatized</li>
+        <li>Discreet packaging can meaningfully normalize these everyday experiences</li>
+      </ul>
+    </div>
+    <div class="split__image">
+      <div class="split__img-bg" style="background-image: url('images/Basics/19.png');"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Image: 4.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-r3">
+    <div class="panel__bg" style="background-image: url('images/Basics/4.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Image: 5.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-r4">
+    <div class="panel__bg" style="background-image: url('images/Basics/5.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Final Outcome
+       ============================================================ -->
+  <div class="text-block" id="text-outcome">
+    <div class="text-block__inner">
+      <span class="panel__eyebrow">Final Outcome</span>
+      <h2 class="panel__heading">Quiet by design.</h2>
+      <p class="panel__body">
+        Rather than making these products louder, Basics focuses on making users feel more comfortable. The system prioritizes privacy, clarity, and accessible education while maintaining a clean and modern visual identity.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Image: 6.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-r5">
+    <div class="panel__bg" style="background-image: url('images/Basics/6.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Pkg pair: 7 + 8 -->
+  <div class="pkg-pair" id="pkg-pair-1">
+    <div class="pkg-pair__col">
+      <div class="pkg-pair__bg" style="background-image: url('images/Basics/7.png');"></div>
+    </div>
+    <div class="pkg-pair__col">
+      <div class="pkg-pair__bg" style="background-image: url('images/Basics/8.png');"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Image: 9.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-r6">
+    <div class="panel__bg" style="background-image: url('images/Basics/9.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Pkg pair: 10 + 11 -->
+  <div class="pkg-pair" id="pkg-pair-2">
+    <div class="pkg-pair__col">
+      <div class="pkg-pair__bg" style="background-image: url('images/Basics/10.png');"></div>
+    </div>
+    <div class="pkg-pair__col">
+      <div class="pkg-pair__bg" style="background-image: url('images/Basics/11.png');"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Image: 12.png -->
+  <section class="panel panel--contain panel--light-bg" id="panel-r7">
+    <div class="panel__bg" style="background-image: url('images/Basics/12.png');"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       IF Award Poster
+       ============================================================ -->
+  <section class="poster-section" id="poster-section">
+    <div class="poster-section__inner">
+      <div class="poster-section__header">
+        <div class="if-eyebrow">
+          <span class="if-eyebrow__text">IF Design Award</span>
+          <span class="if-eyebrow__rule"></span>
+        </div>
+        <h2 class="panel__heading" style="opacity:1; transform:none; color: white; margin-bottom: 16px;">
+          Submitted for recognition.
+        </h2>
+        <p class="panel__body" style="opacity:1; transform:none;">
+          Basics was submitted to the iF Design Award for its approach to inclusive design, emotional discretion, and educational packaging. A project that started with a real problem and ended with a system that genuinely tries to solve it.
+        </p>
+      </div>
+      <div class="poster-wrap" id="posterWrap">
+        <img src="images/Basics/Basics IF Poster.png" alt="Basics IF Design Award Poster" id="posterImg">
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================
+       Reflection / Closing
+       ============================================================ -->
+  <section class="panel panel--dark-bg panel--close" id="panel-closing">
+    <div class="panel__bg panel__bg--soft" style="background-image: url('images/Basics/13.png');"></div>
+    <div class="panel__overlay panel__overlay--full"></div>
+    <div class="panel__content">
+      <p class="panel__tagline">Designed for<br><em>comfort.</em></p>
+      <p class="panel__body">
+        This project pushed me to think beyond aesthetics and focus on emotional experience. Designing for sensitive topics required balancing discretion, accessibility, education, and visual identity in a way that felt approachable rather than clinical.
+      </p>
+      <a href="../index.html" class="panel__back">
+        <span class="panel__back-arrow">←</span> Back to Products
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Lightbox
+       ============================================================ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="Poster enlarged view">
+    <img src="" alt="Basics IF Poster — full view" class="lightbox__img" id="lightboxImg">
+  </div>
+
+  <script>
+    /* Navigation */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 24);
+    }, { passive: true });
+
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+    });
+
+    navLinks.querySelectorAll('.nav__link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+      });
+    });
+
+    /* Intersection Observer — panels, text blocks, split, pkg-pair */
+    const observables = document.querySelectorAll('.panel, .text-block, .split, .pkg-pair');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('is-active', entry.isIntersecting);
+      });
+    }, { threshold: 0.15 });
+
+    observables.forEach(el => observer.observe(el));
+
+    /* Activate hero immediately */
+    document.getElementById('panel-hero').classList.add('is-active');
+
+    /* Lightbox */
+    const lightbox    = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* Research split image */
+    document.querySelector('.split__image').addEventListener('click', () => {
+      const bg = document.querySelector('.split__img-bg');
+      const url = bg.style.backgroundImage.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+      openLightbox(url);
+    });
+
+    /* Poster */
+    document.getElementById('posterWrap').addEventListener('click', () => {
+      openLightbox(document.querySelector('#posterWrap img').src);
+    });
+
+    /* Process grid cells */
+    document.querySelectorAll('.proc-cell').forEach(cell => {
+      cell.addEventListener('click', () => {
+        const bg = cell.querySelector('.proc-cell__bg');
+        const url = bg.style.backgroundImage.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+        openLightbox(url);
+      });
+    });
+
+    lightbox.addEventListener('click', closeLightbox);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
+</body>
+</html>
