@@ -38,7 +38,7 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -147,311 +147,171 @@ img { display: block; max-width: 100%; }
 }
 
 /* ============================================================
-   Hero
+   Home — Opening
    ============================================================ */
-.hero {
-  min-height: 100vh;
-  padding-top: var(--nav-h);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.hero__content {
+.hm-open {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100vh;
+  height: 100svh;
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 64px var(--pad);
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: center;
-}
-
-/* — Text side — */
-.hero__text {
+  padding: 0 var(--pad) clamp(26px, 6vh, 76px);
   display: flex;
-  flex-direction: column;
-  gap: 28px;
+  align-items: flex-end;
+  --seq-size: clamp(36px, 13.2vw, 191px);
 }
 
-.hero__eyebrow {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  opacity: 0;
-  transform: translateY(12px);
-  animation: fadeUp 0.7s var(--ease-out) 0.15s forwards;
-}
-
-.hero__headline {
+/* The word sequence sits in one box sized by its resting word, "Design".
+   Size is set so the longest word (Experience, 3.75em in Bebas Neue) runs
+   to ~93% of the measure at any viewport — the type is as large as the
+   composition allows without the sequence ever reflowing. */
+.hm-open__seq {
+  position: relative;
+  display: inline-block;
   font-family: var(--font-display);
-  font-size: clamp(72px, 9.5vw, 148px);
-  line-height: 0.92;
+  font-size: var(--seq-size);
+  line-height: 1;
   letter-spacing: 0.01em;
-  overflow: hidden;
+  margin-bottom: -0.06em;
+  will-change: transform;
 }
 
-.hero__line {
-  display: block;
-  opacity: 0;
-  transform: translateY(105%);
-  animation: slideUp 0.85s var(--ease-out) forwards;
-}
-.hero__line:nth-child(1) { animation-delay: 0.25s; }
-.hero__line:nth-child(2) { animation-delay: 0.4s; }
-.hero__line:nth-child(3) { animation-delay: 0.55s; }
-
-.hero__line--accent { color: var(--accent); }
-
-.hero__sub {
-  font-size: 15px;
-  font-weight: 300;
-  line-height: 1.75;
-  color: var(--muted);
-  max-width: 360px;
-  opacity: 0;
-  transform: translateY(12px);
-  animation: fadeUp 0.7s var(--ease-out) 0.7s forwards;
-}
-
-.hero__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text);
-  border: 1px solid var(--text);
-  padding: 15px 28px;
-  width: fit-content;
-  transition:
-    background 0.3s var(--ease-out),
-    color 0.3s var(--ease-out),
-    border-color 0.3s var(--ease-out);
-  opacity: 0;
-  transform: translateY(12px);
-  animation: fadeUp 0.7s var(--ease-out) 0.85s forwards;
-}
-
-.hero__cta::after {
-  content: '→';
-  transition: transform 0.3s var(--ease-out);
-}
-.hero__cta:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-}
-.hero__cta:hover::after { transform: translateX(6px); }
-
-/* — Visual side — */
-.hero__visual {
-  display: grid;
-  grid-template-rows: 2fr 1fr;
-  gap: 14px;
-  height: clamp(380px, 58vh, 620px);
-  opacity: 0;
-  transform: translateX(36px);
-  animation: fadeLeft 1s var(--ease-out) 0.35s forwards;
-}
-
-.hero__img {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.hero__img-inner {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.75s var(--ease-out);
-}
-.hero__img:hover .hero__img-inner { transform: scale(1.04); }
-
-.hero__img-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.hero__ph {
-  width: 100%;
-  height: 100%;
-}
-
-.hero__ph--1 {
-  background: linear-gradient(145deg, #181818 0%, #272727 45%, #0f0f0f 100%);
-  position: relative;
-}
-.hero__ph--1::after {
-  content: '';
+/* Cycling words are taken out of flow and pinned to the same left edge and
+   baseline, so only the word changes — the box never moves or resizes. */
+.hm-open__word {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 35% 65%, rgba(250, 80, 0, 0.18) 0%, transparent 58%);
-}
-
-.hero__ph--2 {
-  background: linear-gradient(135deg, #1c1c1c 0%, #2e2e2e 100%);
-  position: relative;
-}
-.hero__ph--2::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 70% 35%, rgba(250, 80, 0, 0.1) 0%, transparent 50%);
-}
-
-.hero__img-label {
-  position: absolute;
-  bottom: 14px;
-  left: 18px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-  pointer-events: none;
-}
-
-.hero__img--secondary .hero__img-label {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-
-/* Scroll indicator */
-.hero__scroll {
-  position: absolute;
-  bottom: 32px;
-  left: var(--pad);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  opacity: 0;
-  animation: fadeUp 0.6s var(--ease-out) 1.2s forwards;
-}
-
-.hero__scroll-line {
-  display: block;
-  width: 48px;
-  height: 1px;
-  background: var(--border);
-  position: relative;
-  overflow: hidden;
-}
-.hero__scroll-line::after {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 -100%;
-  width: 100%;
-  background: var(--accent);
-  animation: scanLine 2.4s var(--ease-sharp) infinite 1.6s;
-}
-
-.hero__scroll-text {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* ============================================================
-   Discipline Ticker
-   ============================================================ */
-.ticker {
-  background: var(--dark);
-  padding: 15px 0;
-  overflow: hidden;
+  left: 0;
+  bottom: 0;
   white-space: nowrap;
+  color: var(--muted);
+  opacity: 0;
+  animation: wordSwap 210ms var(--ease-out) both;
 }
 
-.ticker__track {
-  display: inline-flex;
-  gap: 28px;
-  animation: ticker 22s linear infinite;
+/* 170ms apart: quick enough to read as one gesture, slow enough to read. */
+.hm-open__word:nth-child(1) { animation-delay: 220ms;  }
+.hm-open__word:nth-child(2) { animation-delay: 390ms;  }
+.hm-open__word:nth-child(3) { animation-delay: 560ms;  }
+.hm-open__word:nth-child(4) { animation-delay: 730ms;  }
+.hm-open__word:nth-child(5) { animation-delay: 900ms;  }
+.hm-open__word:nth-child(6) { animation-delay: 1070ms; }
+.hm-open__word:nth-child(7) { animation-delay: 1240ms; }
+
+/* The resting word holds the box open from the first frame. */
+.hm-open__final {
+  position: relative;
+  display: inline-block;
 }
 
-.ticker__item {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+/* "Design" resolves with the slower masked rise the site opens with,
+   rather than another swap — the sequence reads as answered, not cut off. */
+.hm-open__reveal {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
 }
 
-.ticker__sep {
-  color: var(--accent);
-  font-size: 11px;
-  line-height: 1;
+.hm-open__reveal > span {
+  display: block;
+  opacity: 0;
+  transform: translateY(102%);
+  animation: slideUp 640ms var(--ease-out) 1510ms both;
+}
+
+/* Held until the webfont is ready so the sequence never swaps metrics
+   mid-run (class is removed by main.js on document.fonts.ready). */
+.hm-open--hold .hm-open__word,
+.hm-open--hold .hm-open__reveal > span,
+.hm-open--hold .hm-open__mark { animation-play-state: paused; }
+
+/* Baseline-set accent mark — the page's single note of colour up top */
+.hm-open__mark {
+  position: absolute;
+  left: 100%;
+  /* 0.175em = Bebas Neue's baseline offset from the line box bottom at
+     line-height 1, so the mark keeps sitting on the numerals' baseline. */
+  bottom: 0.175em;
+  width: 0.082em;
+  height: 0.082em;
+  margin-left: 0.055em;
+  background: var(--accent);
+  opacity: 0;
+  animation: fadeMark 520ms var(--ease-out) 2000ms forwards;
 }
 
 /* ============================================================
-   Work / Projects
+   Home — Scroll cue
    ============================================================ */
-.work {
-  padding: 120px 0;
+
+/* A hairline on the opposite corner from the word, with a single accent
+   segment travelling down it. Reads as direction, not as a widget. */
+.hm-scroll {
+  margin-left: auto;
+  align-self: flex-end;
+  position: relative;
+  width: 1px;
+  height: clamp(40px, 6vh, 64px);
+  margin-bottom: calc(var(--seq-size) * 0.115);
+  background: var(--border);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out);
 }
 
-.work__container {
+/* Waits for the word sequence to resolve before appearing. */
+.hm-scroll__line {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: fadeMark 700ms var(--ease-out) 2400ms forwards;
+}
+
+.hm-scroll__line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 30%;
+  background: var(--accent);
+  animation: scrollTravel 2.4s var(--ease-sharp) 3s infinite;
+}
+
+/* Irrelevant the moment the sheet starts rising. */
+.hm-open--scrolled .hm-scroll { opacity: 0; }
+
+/* ============================================================
+   Home — Sheet (scrolls up over the opening)
+   ============================================================ */
+.hm-sheet {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+}
+
+.hm-work {
+  padding: clamp(56px, 10vh, 130px) var(--pad) clamp(72px, 12vh, 170px);
+}
+
+.hm-work__grid {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 var(--pad);
-}
-
-.work__header {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  margin-bottom: 56px;
-}
-
-.work__label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.work__title {
-  font-family: var(--font-display);
-  font-size: clamp(42px, 5vw, 76px);
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-
-/* Grid */
-.work__grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 320px 260px;
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(32px, 4vw, 56px) clamp(16px, 2.2vw, 30px);
 }
 
-/* Card assignments */
-.card:nth-child(1) { grid-column: 1 / 7;  grid-row: 1 / 3; } /* featured tall */
-.card:nth-child(2) { grid-column: 7 / 10; grid-row: 1 / 2; }
-.card:nth-child(3) { grid-column: 10 / 13; grid-row: 1 / 2; }
-.card:nth-child(4) { grid-column: 7 / 10; grid-row: 2 / 3; }
-.card:nth-child(5) { grid-column: 10 / 13; grid-row: 2 / 3; }
-
-/* Card base */
-.card {
+/* ============================================================
+   Home — Project tile
+   ============================================================ */
+.hm-tile {
   position: relative;
-  overflow: hidden;
-  background: var(--dark-2);
-  cursor: pointer;
 }
 
-.card::before {
+/* Accent edge draws down the card on hover — the same signature the
+   Selected Works cards use. */
+.hm-tile::before {
   content: '';
   position: absolute;
   top: 0;
@@ -462,129 +322,102 @@ img { display: block; max-width: 100%; }
   transition: height 0.45s var(--ease-out);
   z-index: 3;
 }
-.card:hover::before { height: 100%; }
+.hm-tile:hover::before { height: 100%; }
 
-.card__link {
-  display: block;
-  width: 100%;
-  height: 100%;
+.hm-tile__link { display: block; }
+
+.hm-tile__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.hm-tile__frame {
   position: relative;
-}
-
-.card__media {
-  position: absolute;
-  inset: 0;
   overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: #f7f7f7;
+  /* Hairline keeps every tile reading as the same box, including the
+     product renders that sit on white and would otherwise float. */
+  border: 1px solid var(--border);
 }
 
-.card__img {
-  position: absolute;
-  inset: 0;
+.hm-tile__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  transition: transform 0.75s var(--ease-out);
+  transition: transform 1.1s var(--ease-out);
 }
-.card:hover .card__img { transform: scale(1.05); }
+.hm-tile:hover .hm-tile__img { transform: scale(1.035); }
 
-.card__img--crop { transform: scale(1.35); }
-.card:hover .card__img--crop { transform: scale(1.4); }
+/* Focal points — keeps each crop on the product */
+.hm-img--grill  { object-position: 52% 47%; transform: scale(1.1); }
+.hm-tile:hover .hm-img--grill { transform: scale(1.14); }
+.hm-img--pmf    { object-position: 50% 47%; }
+.hm-img--basics { object-position: 50% 52%; }
+.hm-img--legit  { object-position: 50% 38%; }
 
-.card__ph {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.75s var(--ease-out);
-}
-.card:hover .card__ph { transform: scale(1.05); }
-
-/* Placeholder backgrounds */
-.card__ph--1 {
-  background: linear-gradient(145deg, #1a1a1a 0%, #262626 45%, #111 100%);
-  position: relative;
-}
-.card__ph--1::after {
-  content: '';
+/* Stark Watch has no photography — the blueprint fills its tile */
+.hm-tile__ph {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 38% 55%, rgba(250, 80, 0, 0.13) 0%, transparent 60%);
-}
-
-.card__ph--2 {
-  background: linear-gradient(150deg, #181818 0%, #242424 100%);
-}
-
-.card__ph--3 {
   background: linear-gradient(200deg, #1e1e1e 0%, #282828 100%);
-  position: relative;
+  transition: transform 1.1s var(--ease-out);
 }
-.card__ph--3::after {
+.hm-tile__ph::after {
   content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at 65% 30%, rgba(250, 80, 0, 0.09) 0%, transparent 55%);
 }
+.hm-tile:hover .hm-tile__ph { transform: scale(1.03); }
 
-.card__ph--4 {
-  background: linear-gradient(160deg, #111 0%, #202020 100%);
-}
-
-.card__ph--5 {
-  background: linear-gradient(135deg, #0d0d0d 0%, #1c1c1c 50%, #0a0a0a 100%);
-  position: relative;
-}
-.card__ph--5::after {
-  content: '';
+/* Scrim — carries the overlay type over light renders and dark photography
+   alike. Lifts on hover so more of the image comes through. */
+.hm-tile__scrim {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 18% 75%, rgba(250, 80, 0, 0.11) 0%, transparent 45%),
-    radial-gradient(ellipse at 80% 25%, rgba(250, 80, 0, 0.07) 0%, transparent 40%);
+  background: linear-gradient(to top,
+    rgba(0, 0, 0, 0.76) 0%,
+    rgba(0, 0, 0, 0.45) 20%,
+    rgba(0, 0, 0, 0.12) 40%,
+    transparent 58%);
+  transition: opacity 0.45s var(--ease-out);
+  pointer-events: none;
 }
+.hm-tile:hover .hm-tile__scrim { opacity: 0.82; }
 
-.card__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 55%);
-  transition: opacity 0.4s var(--ease-out);
-}
-.card:hover .card__scrim { opacity: 0.85; }
-
-.card__info {
+.hm-tile__info {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 20px 22px;
+  z-index: 2;
+  padding: clamp(16px, 1.7vw, 24px) clamp(18px, 1.9vw, 28px);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 10px;
-  z-index: 2;
+  gap: 14px;
 }
 
-.card__num {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.28);
-  align-self: flex-start;
-  padding-top: 4px;
-}
+.hm-tile__meta { min-width: 0; }
 
-.card__meta { flex: 1; }
-
-.card__name {
+.hm-tile__name {
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.2vw, 30px);
-  color: white;
+  font-size: clamp(23px, 2.5vw, 36px);
   line-height: 1;
   letter-spacing: 0.02em;
+  color: #fff;
 }
 
-.card__cat {
-  display: block;
-  margin-top: 5px;
+.hm-tile__sub {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 7px;
+}
+
+.hm-tile__cat {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -592,78 +425,33 @@ img { display: block; max-width: 100%; }
   color: var(--accent);
 }
 
-.card__arrow {
+.hm-tile__year {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.hm-tile__arrow {
+  flex: none;
+  font-family: var(--font-body);
   font-size: 18px;
-  color: white;
+  line-height: 1;
+  color: #fff;
   opacity: 0;
   transform: translateX(-8px);
   transition:
     opacity 0.3s var(--ease-out),
     transform 0.3s var(--ease-out);
 }
-.card:hover .card__arrow {
+.hm-tile:hover .hm-tile__arrow {
   opacity: 1;
   transform: translateX(0);
 }
 
-/* ============================================================
-   About Teaser
-   ============================================================ */
-.about-teaser {
-  background: var(--dark);
-  color: white;
-  padding: 120px var(--pad);
-}
-
-.about-teaser__inner {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.about-teaser__statement {
-  font-family: var(--font-display);
-  font-size: clamp(52px, 6.5vw, 104px);
-  line-height: 1.05;
-  letter-spacing: 0.02em;
-}
-
-.about-teaser__accent { color: var(--accent); }
-
-.about-teaser__bio {
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.85;
-  color: rgba(255, 255, 255, 0.55);
-  max-width: 420px;
-  margin-bottom: 40px;
-}
-
-.about-teaser__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 8px;
-  transition: border-color 0.3s, color 0.3s;
-}
-.about-teaser__cta:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.about-teaser__arrow {
-  transition: transform 0.3s var(--ease-out);
-}
-.about-teaser__cta:hover .about-teaser__arrow {
-  transform: translateX(6px);
+/* No hover to reveal it on touch, so the cue rests visible instead. */
+@media (hover: none) {
+  .hm-tile__arrow { opacity: 0.5; transform: none; }
 }
 
 /* ============================================================
@@ -678,6 +466,8 @@ img { display: block; max-width: 100%; }
   max-width: var(--max-w);
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
   justify-content: space-between;
   align-items: center;
 }
@@ -736,20 +526,31 @@ img { display: block; max-width: 100%; }
   100% { left:  100%; }
 }
 
+@keyframes fadeMark {
+  to { opacity: 1; }
+}
+
+/* Rises in over ~40ms, holds, then crosses with the next word for ~40ms —
+   a dissolve short enough to read as one swap rather than two words. */
+@keyframes scrollTravel {
+  0%   { transform: translateY(-30%); opacity: 0; }
+  14%  { opacity: 1; }
+  55%  { transform: translateY(233%); opacity: 0; }
+  100% { transform: translateY(233%); opacity: 0; }
+}
+
+@keyframes wordSwap {
+  0%   { opacity: 0; transform: translateY(0.06em);  }
+  19%  { opacity: 1; transform: translateY(0);       }
+  76%  { opacity: 1; transform: translateY(0);       }
+  100% { opacity: 0; transform: translateY(-0.02em); }
+}
+
 /* ============================================================
    Responsive — Tablet (≤1024px)
    ============================================================ */
 @media (max-width: 1024px) {
-  .work__grid {
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 360px 240px 240px;
-  }
-
-  .card:nth-child(1) { grid-column: 1 / 7; grid-row: 1 / 2; }
-  .card:nth-child(2) { grid-column: 1 / 4; grid-row: 2 / 3; }
-  .card:nth-child(3) { grid-column: 4 / 7; grid-row: 2 / 3; }
-  .card:nth-child(4) { grid-column: 1 / 4; grid-row: 3 / 4; }
-  .card:nth-child(5) { grid-column: 4 / 7; grid-row: 3 / 4; }
+  .hm-work__grid { gap: clamp(28px, 4vw, 44px) clamp(14px, 2vw, 22px); }
 }
 
 /* ============================================================
@@ -775,44 +576,41 @@ img { display: block; max-width: 100%; }
   .nav__links.open { display: flex; }
   .nav__toggle { display: flex; }
 
-  /* Hero */
-  .hero__content {
+  /* Opening */
+  .hm-open { padding-bottom: clamp(22px, 5vh, 48px); }
+
+  /* Work → single column */
+  .hm-work__grid {
     grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 40px var(--pad) 60px;
+    gap: clamp(28px, 7vw, 40px);
+  }
+}
+
+/* ============================================================
+   Reduced Motion — Home
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .hm-open__word { display: none; }
+
+  .hm-open__reveal > span,
+  .hm-open__mark {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 
-  .hero__visual {
-    height: 280px;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
-  }
+  .hm-open__seq { transform: none !important; }
 
-  .hero__scroll { display: none; }
+  .hm-scroll__line { animation: none; opacity: 1; }
+  .hm-scroll__line::after { animation: none; opacity: 0.85; transform: none; }
 
-  /* Work grid → single column */
-  .work { padding: 80px 0; }
+  .hm-tile__img,
+  .hm-tile__ph,
+  .hm-tile__scrim,
+  .hm-tile__arrow { transition: none; }
 
-  .work__grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: none;
-    gap: 12px;
-  }
+  .hm-tile::before { transition: none; }
 
-  .card:nth-child(n) {
-    grid-column: 1 / -1;
-    grid-row: auto;
-    min-height: 240px;
-  }
-
-  /* About */
-  .about-teaser {
-    padding: 80px var(--pad);
-  }
-  .about-teaser__inner {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-
-  .about-teaser__bio { max-width: 100%; }
+  .hm-tile:hover .hm-tile__img,
+  .hm-tile:hover .hm-tile__ph { transform: none; }
 }

@@ -1,0 +1,1162 @@
+/* ============================================================
+   MUSEUM — design system
+   ------------------------------------------------------------
+   A self-contained theme. Nothing here depends on styles.css,
+   and styles.css does not depend on anything here, so the two
+   themes can co-exist while the rest of the site migrates.
+
+   Prefix: .ex-  (exhibition)
+
+   Contents
+     1  Tokens
+     2  Base
+     3  Layout primitives
+     4  Typography components
+     5  Navigation
+     6  Landing
+     7  Work grid
+     8  Catalogue list  (reusable; unused on the homepage)
+     9  Onward + footer
+    10  Motion
+    11  Responsive
+    12  Reduced motion
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. TOKENS
+   ------------------------------------------------------------ */
+:root {
+  /* Colour — one accent, everything else neutral */
+  --paper:    #ffffff;
+  --ink:      #0b0b0b;
+  --ink-2:    #6e6e6e;   /* secondary copy */
+  --ink-3:    #a6a6a6;   /* annotations */
+  --rule:     #e4e4e4;   /* hairlines */
+  --panel:    #171717;   /* dark media surfaces */
+  --accent:   #fa5000;
+
+  /* Type — system grotesk, no webfont, no FOUT */
+  --font: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-bold:    700;
+
+  /* Type scale */
+  --fs-annot:   11px;                          /* tracked caps */
+  --fs-caption: 13px;                          /* meta, bylines */
+  --fs-body:    clamp(14px, 0.95vw, 16px);
+  --fs-name:    clamp(17px, 1.35vw, 22px);     /* work titles */
+  --fs-cycle:   clamp(34px, 4.4vw, 72px);      /* the rotating word */
+  --fs-statement: clamp(46px, 7.2vw, 116px);   /* hero statement */
+
+  --lh-tight: 1.04;
+  --lh-copy:  1.5;
+
+  --tr-annot:  0.14em;
+  --tr-tight: -0.025em;
+
+  /* Spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 20px;
+  --s-5: 32px;
+  --s-6: 48px;
+  --s-7: clamp(56px, 6vw, 88px);
+  --s-8: clamp(80px, 9vw, 132px);
+
+  /* Page */
+  --page:     1560px;
+  --gutter:   clamp(20px, 4vw, 72px);
+  --col-gap:  clamp(12px, 1.6vw, 28px);   /* 12-col primitive */
+  --grid-gap: clamp(16px, 2.4vw, 40px);   /* work grid gutter */
+  --nav-h:    clamp(56px, 5vw, 74px);
+
+  /* shared height for a large + small pair */
+  --row-pair: clamp(300px, 33vw, 540px);
+
+  /* hero picture crop: 50% centred, 100% hard against the left edge */
+  --bg-x: 50%;
+
+  /* Motion */
+  --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-1:   240ms;
+  --dur-2:   480ms;
+  --dur-3:   900ms;
+}
+
+/* ------------------------------------------------------------
+   2. BASE
+   ------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-copy);
+  color: var(--ink);
+  background: var(--paper);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+h1, h2, h3 { font-size: inherit; font-weight: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* ------------------------------------------------------------
+   3. LAYOUT PRIMITIVES
+   ------------------------------------------------------------ */
+
+/* The measure. Every aligned element on the site uses this. */
+.ex-shell {
+  width: 100%;
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* 12 columns, for pages that need finer placement than the
+   work grid. Spans live in the system, never in markup. */
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--col-gap);
+}
+.ex-span-4  { grid-column: span 4; }
+.ex-span-5  { grid-column: span 5; }
+.ex-span-6  { grid-column: span 6; }
+.ex-span-7  { grid-column: span 7; }
+.ex-span-8  { grid-column: span 8; }
+.ex-span-12 { grid-column: span 12; }
+
+/* ------------------------------------------------------------
+   4. TYPOGRAPHY COMPONENTS
+   ------------------------------------------------------------ */
+
+/* Tracked caps — labels, annotations, meta. The system's voice. */
+.ex-annot {
+  display: block;
+  font-size: var(--fs-annot);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-annot);
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+.ex-annot--ink { color: var(--ink); }
+.ex-annot--accent { color: var(--accent); }
+
+.ex-copy {
+  font-size: var(--fs-body);
+  line-height: var(--lh-copy);
+  color: var(--ink-2);
+  max-width: 42ch;
+}
+
+/* Reading-length text. The base measure is tuned for a line or two
+   beside imagery; paragraphs need more size and a longer line. */
+.ex-copy--prose {
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.6;
+  max-width: 54ch;
+  color: var(--ink-2);
+}
+
+.ex-rule {
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+}
+
+/* Section head — label left, count right, hairline under.
+   One per section, not one per row. */
+.ex-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Text link with a cue that moves on hover */
+.ex-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  font-size: var(--fs-annot);
+  letter-spacing: var(--tr-annot);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.ex-link__cue { transition: transform var(--dur-1) var(--ease); }
+.ex-link:hover { color: var(--accent); }
+.ex-link:hover .ex-link__cue { transform: translateX(5px); }
+
+/* ------------------------------------------------------------
+   5. NAVIGATION
+   ------------------------------------------------------------ */
+.ex-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: var(--nav-h);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-2) var(--ease);
+}
+.ex-nav.is-scrolled { border-bottom-color: var(--rule); }
+
+.ex-nav__inner {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Accent tick above the wordmark — the catalogue's cover band */
+.ex-nav__mark {
+  position: relative;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.08em;
+}
+.ex-nav__mark::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.ex-nav__links {
+  display: flex;
+  gap: var(--s-6);
+  list-style: none;
+}
+
+.ex-nav__link {
+  font-size: var(--fs-annot);
+  letter-spacing: var(--tr-annot);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition: color var(--dur-1) var(--ease);
+}
+.ex-nav__link:hover,
+.ex-nav__link[aria-current='page'] { color: var(--ink); }
+
+.ex-nav__toggle {
+  display: none;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.ex-nav__toggle span {
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  height: 1px;
+  background: var(--ink);
+  transition: transform var(--dur-1) var(--ease);
+}
+.ex-nav__toggle span:nth-child(1) { top: 9px; }
+.ex-nav__toggle span:nth-child(2) { top: 15px; }
+.ex-nav__toggle.is-open span:nth-child(1) { transform: translateY(3px) rotate(45deg); }
+.ex-nav__toggle.is-open span:nth-child(2) { transform: translateY(-3px) rotate(-45deg); }
+
+/* ------------------------------------------------------------
+   6. LANDING
+   ------------------------------------------------------------
+   Short of a full viewport on purpose: the work grid's header
+   sits just below the fold, so the page shows where it goes.
+   One mid-scale element, everything else 11–13px.
+   ------------------------------------------------------------ */
+/* One composition: the picture fills the hero, white panels cut in from
+   the page edges to hold the type, the type sits on top. Layer order is
+   picture (0) -> panels (-1 inside the type layer) -> type (2). */
+.ex-landing {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: var(--nav-h);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+}
+
+/* Everything except the picture rides above it. */
+.ex-landing > *:not(.ex-landing__bg) {
+  position: relative;
+  z-index: 2;
+}
+
+/* The picture fills the whole hero. At desktop ratios cover scales it to
+   the hero height, so the composition reads complete top to bottom and
+   only the outer edges crop — no horizontal cut across the products. */
+.ex-landing__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* --bg-x slides the composition inside its crop: 50% is centred, higher
+   values move the picture toward the left edge. Nudging the crop rather
+   than the element keeps the hero covered and the picture unscaled. */
+.ex-landing__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--bg-x) 50%;
+}
+
+/* Readability veil. White drifts in from the left edge and pools under the
+   type. No edges, no full-frame overlay — the middle and the whole right
+   side of the composition stay open. Sits inside the picture layer, so it
+   covers the image and nothing else. */
+.ex-landing__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    /* pool under the type, bleeding off the left and bottom */
+    radial-gradient(105% 72% at 4% 86%,
+      #fff 0%,
+      #fff 34%,
+      rgba(255, 255, 255, 0.88) 48%,
+      rgba(255, 255, 255, 0.5) 64%,
+      rgba(255, 255, 255, 0) 80%),
+    /* white entering from the left edge — kept light, so the products in
+       the upper left survive; the pool above does the work where the type
+       actually sits. */
+    linear-gradient(to right,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.45) 11%,
+      rgba(255, 255, 255, 0.14) 24%,
+      rgba(255, 255, 255, 0) 38%);
+}
+
+.ex-landing__block { align-self: end; }
+
+/* Byline row — identity, left */
+.ex-landing__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-bottom: var(--s-5);
+}
+
+/* The rotating slot. Sized by its resting word so the line
+   never reflows as the words change. */
+.ex-cycle {
+  position: relative;
+  display: inline-block;
+  font-size: var(--fs-cycle);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+}
+
+.ex-cycle__word {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  white-space: nowrap;
+  color: var(--ink-3);
+  opacity: 0;
+}
+
+.ex-cycle__final { position: relative; }
+
+/* The clip box that drives the reveal. line-height 1.04 makes the line
+   box shorter than the font's ascent + descent (1.19em in Helvetica
+   Neue), so overflow: hidden would crop descenders — the g in Design.
+   The padding extends the clip box past the baseline and the equal
+   negative margin cancels it, so the margin box — and therefore the
+   line box, the cycling words and everything below — does not move. */
+.ex-cycle__reveal {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.ex-cycle__reveal > span { display: inline-block; }
+
+/* Accent square set on the baseline of the resolved word */
+.ex-cycle__stop {
+  position: absolute;
+  left: 100%;
+  bottom: 0.14em;
+  width: 0.1em;
+  height: 0.1em;
+  margin-left: 0.1em;
+  background: var(--accent);
+  opacity: 0;
+}
+
+.ex-landing__rule {
+  width: 100%;
+  max-width: 42ch;
+  margin: var(--s-5) 0 var(--s-4);
+}
+
+.ex-landing__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: var(--s-6) 0 var(--s-5);
+}
+
+/* Scroll cue — hairline with a single accent tick travelling down */
+.ex-cue {
+  position: relative;
+  flex: none;
+  width: 1px;
+  height: clamp(30px, 4vh, 46px);
+  background: var(--rule);
+  pointer-events: none;
+  transition: opacity var(--dur-2) var(--ease);
+}
+.ex-cue::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 30%;
+  background: var(--accent);
+  animation: exCue 2.6s var(--ease-io) 2.6s infinite;
+}
+.is-scrolled-page .ex-cue { opacity: 0; }
+
+@keyframes exCue {
+  0%   { transform: translateY(-30%); opacity: 0; }
+  14%  { opacity: 1; }
+  56%  { transform: translateY(233%); opacity: 0; }
+  100% { transform: translateY(233%); opacity: 0; }
+}
+
+/* ------------------------------------------------------------
+   6b. PAGE HEADER
+   ------------------------------------------------------------
+   For pages that open on a title rather than the landing
+   composition. Same annotation voice and hairline as the hero.
+   ------------------------------------------------------------ */
+.ex-page {
+  --title-size: clamp(31px, 7.8vw, 128px);
+  padding-top: calc(var(--nav-h) + clamp(80px, 12vw, 190px));
+  padding-bottom: clamp(48px, 7vw, 96px);
+}
+
+.ex-page__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding-bottom: var(--s-4);
+}
+
+/* Rule between the label and the count, filling whatever is left. */
+.ex-page__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Bold and tightly tracked so it carries as a title rather than
+   large body text. Held to a short measure and sat close under its
+   label, so the two read as one unit. */
+/* Sized to hold the whole phrase on one line at any width — the vw
+   term and the measure scale together, so the fit holds instead of
+   only working at one breakpoint. */
+/* Quiet parenthetical label, set tight above the title so the two
+   read as one unit: the label gives context, the title carries. The
+   negative offset on the title absorbs the empty leading above its
+   caps, which would otherwise read as a large gap. */
+.ex-page__kicker {
+  display: block;
+  font-size: var(--fs-body);
+  color: var(--ink);
+  /* Indented by the title's own left side bearing so the two ink
+     edges line up, not just the boxes. Tracks the title's scale. */
+  margin-left: calc(var(--title-size) * 0.072);
+}
+
+.ex-page__title {
+  margin-top: -0.07em;
+  font-size: var(--title-size);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.ex-page__title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------
+   6c. EDITORIAL SECTIONS
+   ------------------------------------------------------------
+   For pages built from prose. Same annotation voice, rules and
+   measure as everywhere else — but spacing is set per movement
+   rather than one uniform lead-in, so the page has density where
+   density helps and air where air helps.
+   ------------------------------------------------------------ */
+
+/* Hero statement — for a page that opens on a few words beside an
+   image. Sits between the page title and a section heading. */
+.ex-statement {
+  font-size: var(--fs-statement);
+  font-weight: var(--fw-bold);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+.ex-statement > span { display: block; }
+
+/* Section heading — confident but below the page title, so a page
+   can carry several without any of them shouting. */
+.ex-heading {
+  font-size: clamp(24px, 2.6vw, 40px);
+  font-weight: var(--fw-bold);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 24ch;
+}
+.ex-heading--sub { font-size: clamp(20px, 1.9vw, 29px); }
+.ex-heading em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* Label row across the measure, with a rule filling the middle.
+   Opens a page; not repeated at every movement. */
+.ex-masthead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding-top: calc(var(--nav-h) + clamp(40px, 5vw, 76px));
+  padding-bottom: var(--s-5);
+}
+.ex-masthead__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Lede — portrait and type as one composition. Five columns of
+   picture against six of type, with a column of air between, and
+   both sides carrying enough to reach a similar depth. */
+.ex-lede {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--col-gap);
+  row-gap: var(--s-6);
+  /* The type block is much shorter than the portrait, so it sits
+     centred against it. Tried top and foot alignment first: top left
+     the old void beneath the copy, and the foot sank the heading too
+     low to lead the page. */
+  align-items: center;
+}
+.ex-lede__figure { grid-column: 1 / span 5; }
+.ex-lede__body   { grid-column: 7 / span 6; }
+
+.ex-lede__body > * + * { margin-top: var(--s-4); }
+.ex-lede__body .ex-rule { margin-block: var(--s-6); }
+
+/* Photography stands on its own: no frame, no radius, no shadow.
+   4/5 is the portrait's own ratio, so nothing is cropped. */
+.ex-portrait {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--paper);
+}
+.ex-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+}
+
+/* Capabilities — the page's dense movement. Numbered terms set in
+   three columns with a hairline under each, so a long list reads as
+   a compact block instead of a tall stack of rows. */
+.ex-capabilities {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: var(--col-gap);
+  border-top: 1px solid var(--ink);
+  margin-top: var(--s-4);
+}
+.ex-capabilities li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--fs-caption);
+  color: var(--ink);
+}
+.ex-capabilities__n {
+  flex: none;
+  font-size: var(--fs-annot);
+  letter-spacing: var(--tr-annot);
+  color: var(--ink-3);
+}
+
+/* Close — a resolved ending rather than one more block. Statement
+   left, the offer and the action right, opened by a single rule. */
+.ex-close {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--col-gap);
+  row-gap: var(--s-5);
+  align-items: start;
+  border-top: 1px solid var(--ink);
+  padding-top: var(--s-5);
+}
+.ex-close__statement { grid-column: 1 / span 6; }
+.ex-close__aside     { grid-column: 8 / span 4; }
+.ex-close__aside > * + * { margin-top: var(--s-5); }
+
+/* Movement spacing, set where it composes rather than uniformly:
+   the dense block follows the lede closely because it continues the
+   thought, while the close stands further off because it ends it. */
+.ex-movement { margin-top: clamp(56px, 6.5vw, 96px); }
+.ex-movement--far { margin-top: clamp(88px, 11vw, 164px); }
+.ex-movement--close { margin-bottom: clamp(64px, 8vw, 110px); }
+
+/* ------------------------------------------------------------
+   6d. TAGS
+   ------------------------------------------------------------
+   A set of terms as bordered chips. Square corners, hairline
+   border, tracked caps — same voice as the annotations.
+   ------------------------------------------------------------ */
+.ex-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+}
+.ex-tags span {
+  font-size: var(--fs-annot);
+  letter-spacing: var(--tr-annot);
+  text-transform: uppercase;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  padding: 12px 22px;
+}
+
+/* ------------------------------------------------------------
+   6e. STATUS LINE
+   ------------------------------------------------------------
+   Reports the real viewport and the active breakpoint, for pages
+   presenting work in progress. Opt-in markup, so no page gets it
+   unless it asks.
+   ------------------------------------------------------------ */
+.ex-status {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+}
+
+.ex-status__item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+/* Tabular figures so the numbers do not jitter as they change. */
+.ex-status__value {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-annot);
+  letter-spacing: var(--tr-annot);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.ex-status__value--ink { color: var(--ink); }
+
+/* Only the breakpoint name changes discretely, so only it fades. */
+.ex-status__label {
+  font-size: var(--fs-annot);
+  letter-spacing: var(--tr-annot);
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: opacity var(--dur-1) var(--ease);
+}
+.ex-status__label.is-changing { opacity: 0; }
+
+/* ------------------------------------------------------------
+   7. WORK GRID/* ------------------------------------------------------------
+   7. WORK GRID
+   ------------------------------------------------------------
+   Two columns, one gutter, one row rhythm, one image ratio.
+   A work may span both columns when its source material needs
+   the width — used sparingly. Variation comes from the pictures.
+   ------------------------------------------------------------ */
+.ex-work { padding-block: var(--s-6) var(--s-8); }
+
+/* A section straight after a page header doesn't need its own leading —
+   the header's trailing space already sets the distance. */
+.ex-page + .ex-work { padding-top: 0; }
+
+/* When a page opens straight into work, the grid is the first thing
+   in the section and supplies its own leading. */
+.ex-work__grid:first-child { margin-top: 0; }
+
+.ex-work__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--grid-gap);
+  row-gap: var(--s-7);
+  margin-top: var(--s-6);
+}
+
+/* Card variants ---------------------------------------------
+   How prominent a project is shown. Pages assign these per
+   project; the records in data/projects.js never change.
+
+     standard  half the measure, the page's base rhythm
+     large  +  small   a pair at one shared height
+     featured  full measure, wide crop
+     wide      full measure at a panorama's own ratio
+   ---------------------------------------------------------- */
+.ex-card--standard { grid-column: span 6; }
+.ex-card--large    { grid-column: span 8; }
+.ex-card--small    { grid-column: span 4; }
+.ex-card--featured,
+.ex-card--wide     { grid-column: span 12; }
+
+/* Featured gets a wide crop, so the image reads as a moment
+   rather than an enlarged card. */
+.ex-card--featured .ex-card__figure { aspect-ratio: 2 / 1; }
+
+/* large + small are height-matched: the span sets the crop, the
+   row height is shared, so the pair aligns top, bottom and
+   caption without either being the same shape as the other. */
+.ex-card--large .ex-card__figure,
+.ex-card--small .ex-card__figure {
+  aspect-ratio: auto;
+  height: var(--row-pair);
+}
+
+.ex-card__link { display: block; }
+
+.ex-card__figure {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--paper);
+}
+.ex-card--wide .ex-card__figure { aspect-ratio: 4 / 1; }
+.ex-card__figure--panel { background: var(--panel); }
+
+/* Renders that sit on white need an edge; photographs do not.
+   Drawn as an overlay — an inset shadow paints beneath the image. */
+.ex-card__figure--edge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px var(--rule);
+  pointer-events: none;
+}
+
+/* A render given the full measure doesn't need the box — it has room
+   to sit on the page on its own. Scoped to the featured variant, so a
+   render in the tighter repeating grid keeps its edge. */
+.ex-card--featured .ex-card__figure--edge::after { content: none; }
+
+.ex-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-3) var(--ease);
+}
+.ex-card__link:hover .ex-card__img { transform: scale(1.015); }
+
+/* Caption — under the work, never on it. Fixed offset, so every
+   caption in a row shares a baseline. */
+.ex-card__caption {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+}
+
+.ex-card__num {
+  flex: none;
+  font-size: var(--fs-annot);
+  letter-spacing: var(--tr-annot);
+  color: var(--ink-3);
+  transition: color var(--dur-1) var(--ease);
+}
+.ex-card__link:hover .ex-card__num { color: var(--accent); }
+
+.ex-card__text { min-width: 0; }
+
+.ex-card__name {
+  font-size: var(--fs-name);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-tight);
+  line-height: 1.2;
+  transition: color var(--dur-1) var(--ease);
+}
+.ex-card__link:hover .ex-card__name { color: var(--accent); }
+
+.ex-card__meta {
+  margin-top: 2px;
+  font-size: var(--fs-caption);
+  color: var(--ink-2);
+}
+
+/* The cue is the affordance — it says these pictures are doors. */
+.ex-card__cue {
+  margin-left: auto;
+  flex: none;
+  font-size: var(--fs-caption);
+  color: var(--ink-3);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+}
+.ex-card__link:hover .ex-card__cue {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--accent);
+}
+@media (hover: none) {
+  .ex-card__cue { opacity: 0.5; transform: none; }
+}
+
+/* ------------------------------------------------------------
+   8. CATALOGUE LIST
+   ------------------------------------------------------------
+   Not used on the homepage — the grid is the index there. Kept
+   for the Products / archive pages when they migrate.
+   ------------------------------------------------------------ */
+.ex-list { border-top: 1px solid var(--rule); }
+
+.ex-list__row {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1.6fr) minmax(0, 1fr) 5rem 1.5rem;
+  gap: var(--s-4);
+  align-items: baseline;
+  padding: var(--s-5) 0;
+  border-bottom: 1px solid var(--rule);
+  transition: padding-left var(--dur-2) var(--ease);
+}
+.ex-list__row:hover { padding-left: var(--s-3); }
+
+.ex-list__name {
+  font-size: var(--fs-name);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-tight);
+  transition: color var(--dur-1) var(--ease);
+}
+.ex-list__row:hover .ex-list__name { color: var(--accent); }
+
+.ex-list__cue {
+  justify-self: end;
+  color: var(--ink-3);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+}
+.ex-list__row:hover .ex-list__cue {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------
+   9. ONWARD + FOOTER
+   ------------------------------------------------------------ */
+.ex-onward {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--rule);
+}
+
+.ex-foot { padding-block: var(--s-6) var(--s-5); }
+.ex-foot__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+}
+
+/* ------------------------------------------------------------
+   9b. WORKING DRAWING
+   ------------------------------------------------------------
+   Surface for work with no photography yet. Lives here rather
+   than in a page's <style> so every page renders it the same.
+   ------------------------------------------------------------ */
+.stark-canvas { position: absolute; inset: 0; overflow: hidden; }
+.stark-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.stark-dev-label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+}
+.stark-dev-label::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.6;
+  animation: starkDot 2.8s ease-in-out infinite;
+}
+
+.stark-hand     { transform-origin: 200px 200px; animation: starkSpin 48s linear infinite; }
+.stark-hand-sub { transform-origin: 200px 252px; animation: starkSpin 9s  linear infinite; }
+.stark-ring-outer { animation: starkRing 5s ease-in-out infinite; }
+.stark-glow-drift { animation: starkGlow 7s ease-in-out infinite; }
+
+@keyframes starkDot {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 0.14; transform: scale(0.65); }
+}
+@keyframes starkSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes starkRing {
+  0%, 100% { opacity: 0.18; }
+  50%      { opacity: 0.32; }
+}
+@keyframes starkGlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(10px, -8px) scale(1.08); }
+  66%      { transform: translate(-8px, 6px) scale(0.94); }
+}
+
+/* ------------------------------------------------------------
+   10. MOTION
+   ------------------------------------------------------------ */
+
+/* Landing: small type settles, then the words cycle, then the
+   resting word rises out of its clip and the accent lands. */
+.ex-settle {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: exSettle var(--dur-2) var(--ease) forwards;
+}
+.ex-settle--1 { animation-delay: 120ms; }
+.ex-settle--2 { animation-delay: 200ms; }
+.ex-settle--3 { animation-delay: 280ms; }
+.ex-settle--4 { animation-delay: 2400ms; }
+
+/* 170ms apart: quick enough to read as one gesture, slow enough
+   to read. Grey while cycling; the answer arrives in black. */
+.ex-cycle__word { animation: exSwap 210ms var(--ease) both; }
+.ex-cycle__word:nth-child(1) { animation-delay: 420ms;  }
+.ex-cycle__word:nth-child(2) { animation-delay: 590ms;  }
+.ex-cycle__word:nth-child(3) { animation-delay: 760ms;  }
+.ex-cycle__word:nth-child(4) { animation-delay: 930ms;  }
+.ex-cycle__word:nth-child(5) { animation-delay: 1100ms; }
+.ex-cycle__word:nth-child(6) { animation-delay: 1270ms; }
+.ex-cycle__word:nth-child(7) { animation-delay: 1440ms; }
+
+.ex-cycle__reveal > span {
+  /* 120% clears the padded clip box above, not just the text height */
+  transform: translateY(120%);
+  animation: exRise 640ms var(--ease) 1710ms both;
+}
+.ex-cycle__stop { animation: exFade 420ms var(--ease) 2260ms forwards; }
+
+@keyframes exSwap {
+  0%   { opacity: 0; transform: translateY(0.06em);  }
+  19%  { opacity: 1; transform: translateY(0);       }
+  76%  { opacity: 1; transform: translateY(0);       }
+  100% { opacity: 0; transform: translateY(-0.02em); }
+}
+@keyframes exRise   { to { transform: translateY(0); } }
+@keyframes exFade   { to { opacity: 1; } }
+@keyframes exSettle { to { opacity: 1; transform: translateY(0); } }
+
+/* Work: each card uncovers once, on approach. The second card in
+   a row follows a beat behind the first. */
+.ex-reveal .ex-card__figure {
+  clip-path: inset(10% 0 0 0);
+  transition: clip-path var(--dur-3) var(--ease);
+}
+.ex-reveal .ex-card__img { transform: scale(1.04); }
+.ex-reveal .ex-card__caption {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--dur-2) var(--ease) 140ms,
+    transform var(--dur-2) var(--ease) 140ms;
+}
+
+.ex-reveal.is-visible .ex-card__figure { clip-path: inset(0 0 0 0); }
+.ex-reveal.is-visible .ex-card__img { transform: scale(1); }
+.ex-reveal.is-visible .ex-card__caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ex-work__grid > .ex-reveal:nth-child(even) .ex-card__figure { transition-delay: 90ms; }
+.ex-work__grid > .ex-reveal:nth-child(even) .ex-card__caption { transition-delay: 220ms; }
+
+/* ------------------------------------------------------------
+   11. RESPONSIVE
+   ------------------------------------------------------------ */
+@media (max-width: 1024px) {
+  /* Tighter, but the hierarchy survives. */
+  :root { --row-pair: clamp(260px, 32vw, 400px); }
+
+  .ex-list__row { grid-template-columns: 3rem minmax(0, 1fr) 4.5rem 1.25rem; }
+  .ex-list__discipline { display: none; }
+}
+
+@media (max-width: 768px) {
+  .ex-nav__links {
+    position: fixed;
+    inset: var(--nav-h) 0 auto 0;
+    display: none;
+    flex-direction: column;
+    gap: var(--s-5);
+    padding: var(--s-6) var(--gutter);
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ex-nav__links.is-open { display: flex; }
+  .ex-nav__toggle { display: block; }
+
+  /* The status line keeps the breakpoint and the grid control;
+     the pixel readout is the first thing to go when space is short. */
+  .ex-status { gap: var(--s-4); }
+  .ex-status .ex-status__item--size { display: none; }
+
+  /* Portrait over copy, each at full width — not a shrunken
+     two-column split. */
+  .ex-lede {
+    grid-template-columns: 1fr;
+    row-gap: var(--s-6);
+  }
+  .ex-lede__figure,
+  .ex-lede__body { grid-column: 1 / -1; }
+
+  .ex-capabilities { grid-template-columns: repeat(2, 1fr); }
+
+  .ex-close__statement,
+  .ex-close__aside { grid-column: 1 / -1; }
+
+  /* Portrait viewports crop the composition hard at the sides, but the
+     picture still fills the hero rather than sitting as a band with a cut
+     across it. The panel keeps the type legible over it. */
+  .ex-landing__bg img { object-position: 50% 42%; }
+
+  /* Portrait: the type sits low over a tight crop, so the veil rises from
+     the bottom edge instead of the side. */
+  .ex-landing__bg::after {
+    background:
+      linear-gradient(to top,
+        #fff 0%,
+        #fff 34%,
+        rgba(255, 255, 255, 0.85) 46%,
+        rgba(255, 255, 255, 0.4) 62%,
+        rgba(255, 255, 255, 0) 78%);
+  }
+
+  .ex-landing__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  /* One card per row. Variants keep their crop but not their span,
+     and the paired row height gives way to a ratio. */
+  .ex-work__grid { row-gap: var(--s-6); }
+  .ex-work__grid > .ex-card { grid-column: 1 / -1; }
+
+  .ex-card--featured .ex-card__figure { aspect-ratio: 3 / 2; }
+  .ex-card--wide .ex-card__figure { aspect-ratio: 16 / 9; }
+  .ex-card--large .ex-card__figure,
+  .ex-card--small .ex-card__figure {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+  .ex-card--small .ex-card__figure { aspect-ratio: 1 / 1; }
+
+  .ex-onward { gap: var(--s-5); }
+}
+
+/* ------------------------------------------------------------
+   12. REDUCED MOTION
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .ex-settle {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Skip the sequence, rest on the final word */
+  .ex-cycle__word { display: none; }
+  .ex-cycle__reveal > span,
+  .ex-cycle__stop {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .ex-cue::after { animation: none; opacity: 0.85; }
+
+  .ex-reveal .ex-card__figure { clip-path: none; transition: none; }
+  .ex-reveal .ex-card__img { transform: none; transition: none; }
+  .ex-reveal .ex-card__caption {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .stark-dev-label::before,
+  .stark-hand,
+  .stark-hand-sub,
+  .stark-ring-outer,
+  .stark-glow-drift { animation: none; }
+
+  .ex-card__img,
+  .ex-card__cue,
+  .ex-list__row,
+  .ex-link__cue { transition: none; }
+}

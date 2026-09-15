@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="museum">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +8,109 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/project.css">
+  <!-- Theme typography, layered over project.css. Switched by data-theme on <html>. -->
+  <link rel="stylesheet" href="../../css/theme-type.css">
   <style>
     /* ============================================================
        Basics Packaging — Page-Specific Styles
        ============================================================ */
+
+    /* ============================================================
+       Hero composition — measured for the theme's Helvetica
+       ------------------------------------------------------------
+       The original hero was proportioned around Bebas Neue, which
+       sets "PACKAGING" roughly 40% narrower than Helvetica does at
+       the same size. Left alone, the headline found its own width,
+       overran its column and pushed out across the cartons.
+
+       So the hero now works to a single column. The headline, the
+       credits, the intro and the metadata all resolve to the same
+       right edge, and the headline is sized to that column rather
+       than the column being whatever the headline happened to need.
+
+       The smaller headline is also the argument the project makes:
+       this is packaging designed to be discreet, so a hero that
+       shouts over the product would be contradicting it.
+
+       Scoped to #panel-hero — the shared panel styles and the other
+       project pages are untouched.
+       ============================================================ */
+    /* The type sits in the lower left, so the scrim is shaped to
+       that block instead of dimming the whole frame: a soft pool
+       anchored to the bottom-left corner, over a base fade lighter
+       than the shared one. Net effect — the cartons on the right
+       read brighter than they did before, and the text has ground
+       to sit on. Same device as the homepage hero. */
+    #panel-hero .panel__overlay--bottom {
+      background:
+        radial-gradient(
+          82% 78% at 14% 98%,
+          rgba(0, 0, 0, 0.80) 0%,
+          rgba(0, 0, 0, 0.52) 46%,
+          rgba(0, 0, 0, 0)    82%
+        ),
+        linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.34) 0%,
+          rgba(0, 0, 0, 0.10) 42%,
+          rgba(0, 0, 0, 0)    66%
+        );
+    }
+
+    #panel-hero .panel__content {
+      /* The one measure. Floored at 420px so the three metadata
+         columns stay on one row down to the mobile breakpoint, and
+         never wider than the viewport allows. */
+      --hero-col: min(
+        clamp(420px, 34vw, 520px),
+        calc(100vw - var(--pad) * 2)
+      );
+      /* border-box, so the column is the inner width. */
+      max-width: calc(var(--hero-col) + var(--pad) * 2);
+    }
+
+    #panel-hero .panel__title,
+    #panel-hero .panel__subtitle,
+    #panel-hero .panel__intro,
+    #panel-hero .hero-meta {
+      max-width: var(--hero-col);
+    }
+
+    #panel-hero .panel__title {
+      /* Sized from the column, not guessed per breakpoint, so
+         "PACKAGING" lands just inside the measure at every width
+         and the headline is what sets the block's right edge.
+         0.168 is Helvetica's cap width for this particular word —
+         it needs rechecking if the wording or the face changes. */
+      font-size: calc(var(--hero-col) * 0.168);
+      /* Bebas wanted the +0.01em; Helvetica caps at display size
+         need the opposite to hold together. */
+      letter-spacing: -0.015em;
+    }
+
+    /* Fluid dividers keep the three columns on one row as the
+       measure narrows. Held above 1024px only: below that the
+       metadata stacks, and an id selector would otherwise outrank
+       the media query that flattens these paddings to zero. */
+    @media (min-width: 1025px) {
+      #panel-hero .hero-meta__item {
+        padding-right: clamp(16px, 2vw, 36px);
+      }
+      #panel-hero .hero-meta__item:nth-child(2) {
+        padding-left: clamp(16px, 2vw, 36px);
+      }
+      #panel-hero .hero-meta__item:last-child {
+        padding-left: clamp(16px, 2vw, 36px);
+        padding-right: 0;
+      }
+    }
+
+    /* The credits and the intro read as one group under the title.
+       The block is bottom-anchored, so every millimetre taken out of
+       the rhythm lowers its top edge into the darker ground. */
+    #panel-hero .panel__subtitle { margin-top: 20px; }
+    #panel-hero .panel__intro    { margin-top: 14px; line-height: 1.7; }
+    #panel-hero .hero-meta       { margin-top: 26px; padding-top: 20px; }
 
     /* Hero intro body text */
     .panel__intro {

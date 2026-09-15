@@ -53,3 +53,44 @@ const tickerTrack = document.querySelector('.ticker__track');
 if (tickerTrack) {
   tickerTrack.innerHTML += tickerTrack.innerHTML;
 }
+
+/* ============================================================
+   Home — opening word drifts as the project sheet rises over it
+   ============================================================ */
+const openSeq = document.querySelector('.hm-open__seq');
+const stillPreferred = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Hold the intro until the display webfont is ready, so the words never
+   swap metrics part-way through the sequence. */
+const opening = document.querySelector('.hm-open');
+
+if (opening && document.fonts) {
+  opening.classList.add('hm-open--hold');
+  document.fonts.ready.then(() => opening.classList.remove('hm-open--hold'));
+}
+
+/* The scroll cue stops being relevant the moment the sheet starts rising. */
+if (opening) {
+  const flagScrolled = () =>
+    opening.classList.toggle('hm-open--scrolled', window.scrollY > 24);
+
+  window.addEventListener('scroll', flagScrolled, { passive: true });
+  flagScrolled();
+}
+
+if (openSeq && !stillPreferred) {
+  let ticking = false;
+
+  const driftSeq = () => {
+    const travel = Math.min(window.scrollY, window.innerHeight);
+    openSeq.style.transform = `translate3d(0, ${(travel * -0.12).toFixed(2)}px, 0)`;
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(driftSeq);
+    }
+  }, { passive: true });
+}

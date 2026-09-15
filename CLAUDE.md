@@ -10,7 +10,7 @@ Build a modern, clean, semi-minimal design portfolio website for an industrial/p
 - Style: modern, minimal, sharp, design-forward
 - Avoid emojis, gimmicky visuals, or overly playful UI
 - Use strong typography, clean spacing, large imagery, and smooth transitions
-- The site should feel appropriate for product design, UX/UI, automotive, and powersports work
+- The site should feel appropriate for product design, UX/UI, and automotive work
 
 ## Main Sections
 The website needs these main areas:

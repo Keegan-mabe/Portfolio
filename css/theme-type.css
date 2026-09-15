@@ -1,0 +1,40 @@
+/* ============================================================
+   TYPOGRAPHY BRIDGE — project pages on the new theme's face
+   ------------------------------------------------------------
+   The project pages do all of their typography through three
+   tokens declared in css/project.css. This file re-points those
+   tokens at the museum theme's face and does nothing else: no
+   sizes, no weights, no line-heights, no spacing, no colour,
+   no layout. The page's composition is untouched.
+
+   Opt in per page, without editing the page's styles:
+     1. data-theme="museum" on <html>
+     2. link this file after css/project.css
+
+   The attribute is the switch, so a page can carry the link and
+   still render its original faces until the attribute is added.
+   Pages migrate one at a time; removing the attribute reverts.
+   ============================================================ */
+
+:root[data-theme="museum"] {
+  /* One face across all three roles, as the museum theme does.
+     Identical stack to --font in css/museum.css. */
+  --font-display: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+  --font-body:    'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+  --font-mono:    'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+}
+
+/* ------------------------------------------------------------
+   Case, not styling. Bebas Neue has no lowercase: it drew every
+   display line in caps whatever the markup said. Helvetica has
+   both cases, so the caps have to be asked for or the headings
+   would silently change case — a change in the composition, not
+   in the typeface. The small labels already set their own
+   text-transform; these four relied on the face for it.
+   ------------------------------------------------------------ */
+:root[data-theme="museum"] .nav__logo,
+:root[data-theme="museum"] .panel__title,
+:root[data-theme="museum"] .panel__heading,
+:root[data-theme="museum"] .panel__tagline {
+  text-transform: uppercase;
+}
