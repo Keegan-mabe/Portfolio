@@ -1,0 +1,468 @@
+/* ============================================================
+   CASE — a dark, picture-led case study
+   ------------------------------------------------------------
+   A layer over css/museum.css, not a replacement. The theme's
+   tokens, navigation, links and footer are reused as they are;
+   this file does two things and nothing else:
+
+     1. Flips the theme's palette tokens to a dark ground, so
+        every museum component inverts without being restyled.
+     2. Adds the plate system — the scales a picture can be
+        given as it runs down the page.
+
+   Prefix: .cs-  (case study)
+
+   Opt in per page:
+     <html data-theme="museum" data-page="case">
+     css/museum.css, then this file.
+
+   For work whose source material is already dark — boards,
+   renders on black, studio photography — so the page ground
+   and the pictures are the same material and the layout has
+   nothing left to draw.
+
+   Contents
+     1  Tokens
+     2  Plates
+     3  Hero
+     4  Type
+     5  Motion
+     6  Responsive
+     7  Reduced motion
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. TOKENS
+   ------------------------------------------------------------
+   The layout is one thing and the ground is another. Every case
+   study shares the measurements below; the ground it sits on
+   depends on the work, because a set of boards should be the
+   same material as the page under them. Boards made on black
+   get the dark ground, which is the default here. Boards made
+   on white ask for `data-ground="paper"`.
+
+   Only colour tokens move either way. Nothing in the theme is
+   restyled: its navigation, links and footer follow the tokens.
+   ------------------------------------------------------------ */
+:root[data-page='case'] {
+  /* One width for the process boards, and the margin that holds
+     them off the screen edge. The cap is the boards' own pixel
+     width: past it they would be enlarged rather than shown, so
+     that is where the page stops growing them. */
+  --cs-edge:  clamp(14px, 2.4vw, 44px);
+  --cs-board: 1920px;
+
+  /* Vertical rhythm between plates, and around a written line. */
+  --cs-gap:   clamp(64px, 8vw, 132px);
+  --cs-rest:  clamp(120px, 15vw, 260px);
+}
+
+/* Ink — for work photographed and laid out on black. */
+:root[data-page='case']:not([data-ground='paper']) {
+  --paper: #070707;
+  --ink:   #f2f2f2;
+  --ink-2: #8d8d8d;
+  --ink-3: #5e5e5e;
+  --rule:  #1e1e1e;
+  --panel: #101010;
+}
+
+/* Paper — for work laid out on white. Not the theme's pure
+   white: a board printed white needs a shade of ground behind
+   it or it has no edge at all, and a hairline drawn round every
+   picture would be worse than a tone. This one is cold, which
+   is what the work is about. */
+:root[data-page='case'][data-ground='paper'] {
+  --paper: #f4f5f7;
+  --ink:   #0b0b0b;
+  --ink-2: #63666b;
+  --ink-3: #9a9da3;
+  --rule:  #dcdee2;
+  --panel: #e7e9ec;
+}
+
+:root[data-page='case'] body { background: var(--paper); }
+
+/* ------------------------------------------------------------
+   2. PLATES
+   ------------------------------------------------------------
+   A plate is a picture and its margin: no frame, no caption, no
+   chrome, because the boards already carry their own typography
+   and a second set would argue with the first.
+
+   Two kinds, and only two. Every process board is a `board`, at
+   one width, so a change of picture never reads as a change of
+   system; the work does the varying. The closing photographs
+   are `final`, and drop even the margin.
+   ------------------------------------------------------------ */
+.cs-plate {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--cs-edge);
+}
+.cs-plate + .cs-plate { margin-top: var(--cs-gap); }
+
+/* Height follows from the file, so every board keeps its own
+   proportions at the one shared width. */
+.cs-plate img {
+  width: 100%;
+  height: auto;
+}
+
+.cs-plate--board { max-width: calc(var(--cs-board) + var(--cs-edge) * 2); }
+
+/* The last two pictures are photographs, not boards, and they
+   close the page: the margin comes off and they run edge to
+   edge. The only change of scale on the page, kept for the one
+   place it means something. */
+.cs-plate--final { padding: 0; }
+
+/* ------------------------------------------------------------
+   3. HERO
+   ------------------------------------------------------------
+   The picture is the page's first statement and runs full
+   bleed, unretouched. It is a title card — the project's name
+   is printed across it — so the page adds no title of its own
+   and puts one small line of facts in the bottom corner.
+   ------------------------------------------------------------ */
+.cs-hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.cs-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* One shallow ramp along the bottom edge — enough to hold a
+   line of 11px caps and no more. It clears well before the
+   product, so the picture is seen as it was shot. */
+.cs-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top,
+      rgba(7, 7, 7, 0.62) 0%,
+      rgba(7, 7, 7, 0.34) 8%,
+      rgba(7, 7, 7, 0.12) 17%,
+      rgba(7, 7, 7, 0) 28%);
+}
+
+/* A bright hero needs more ground under its type than a dark
+   one — snow is very nearly the colour of the words. The wash
+   is held to the bottom third and the left edge, so it does the
+   reading work and leaves the picture above it untouched. */
+:root[data-ground='paper'] .cs-hero::after {
+  background:
+    linear-gradient(to top,
+      rgba(7, 7, 7, 0.78) 0%,
+      rgba(7, 7, 7, 0.58) 13%,
+      rgba(7, 7, 7, 0.30) 27%,
+      rgba(7, 7, 7, 0.08) 42%,
+      rgba(7, 7, 7, 0) 56%),
+    linear-gradient(to right,
+      rgba(7, 7, 7, 0.40) 0%,
+      rgba(7, 7, 7, 0.14) 30%,
+      rgba(7, 7, 7, 0) 52%);
+}
+
+:root[data-ground='paper'] .cs-hero__eyebrow { color: rgba(255, 255, 255, 0.86); }
+
+.cs-hero__block {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-bottom: clamp(40px, 7vh, 88px);
+}
+
+/* No measure on it: a project's name is one line for as long as
+   the page is wide enough to hold it, and the shell is the only
+   thing that should decide when it stops being one. */
+.cs-hero__title {
+  font-size: clamp(38px, 6.2vw, 100px);
+  font-weight: var(--fw-bold);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  color: #fff;
+}
+
+/* Where the photograph already carries the project's name, the
+   page does not set it a second time — but the document still
+   needs its heading, so it is hidden rather than dropped. */
+.cs-hero__title--quiet {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A line above the title, when a project is part of something
+   larger and that context comes first. */
+.cs-hero__eyebrow {
+  display: block;
+  margin-bottom: var(--s-4);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* The facts: year, kind, length — the theme's annotation, split
+   by hairlines rather than slashes. The only type on the hero. */
+.cs-hero__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-4);
+}
+.cs-hero__title + .cs-hero__meta { margin-top: var(--s-5); }
+.cs-hero__meta .ex-annot { color: rgba(255, 255, 255, 0.86); }
+.cs-hero__meta i {
+  width: 1px;
+  height: 11px;
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* ------------------------------------------------------------
+   4. TYPE
+   ------------------------------------------------------------
+   Two text elements for the whole page, and one size of label
+   between them. There is no display size: a statement set large
+   between the boards stops the scroll and turns a picture
+   sequence into a piece of writing, which is the one thing this
+   page is not. Anything the boards already say, the page does
+   not repeat.
+   ------------------------------------------------------------ */
+
+/* A written section: a label in the same caps as a chapter
+   mark, and a short column of prose under it. No rule above it
+   — the hairline is what opens a chapter, and these are asides
+   to the work rather than divisions of it. The copy itself is
+   the theme's own prose component, unchanged.
+
+   Two on the page. A third would be a different page. */
+.cs-text {
+  padding-block: var(--cs-rest) var(--cs-gap);
+}
+.cs-text__label { margin-bottom: var(--s-4); }
+
+/* Chapter mark — the phase of the work the next plates belong
+   to. Four words in the whole page; they carry the sequence so
+   the pictures don't have to be numbered. */
+.cs-mark {
+  padding-block: var(--cs-rest) var(--cs-gap);
+}
+.cs-mark__rule {
+  height: 1px;
+  background: var(--rule);
+  margin-bottom: var(--s-3);
+}
+
+/* A chapter opening straight after a written section has had
+   its rest already. */
+.cs-text + .cs-mark { padding-top: 0; }
+
+/* ------------------------------------------------------------
+   Result
+   ------------------------------------------------------------
+   The one place a case study is allowed to raise its voice. It
+   sits at the end, after the work has made its own argument, so
+   the size reads as a conclusion rather than a claim.
+
+   Two elements carry it: the result set as display type, and a
+   short accent bar — the same mark the navigation wears above
+   the wordmark, which is the only orange the site owns. The
+   supporting line sits in its own column and shares a baseline
+   with the type, so the width is composed rather than left
+   over.
+   ------------------------------------------------------------ */
+.cs-award { padding-block: var(--cs-rest) var(--cs-gap); }
+
+.cs-award__mark {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-6);
+}
+.cs-award__tick {
+  flex: none;
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.cs-award__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 34ch);
+  gap: var(--s-6) var(--s-8);
+  align-items: end;
+}
+
+.cs-award__result {
+  font-size: clamp(52px, 9.4vw, 160px);
+  font-weight: var(--fw-bold);
+  line-height: 0.84;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* Nudged off the grid's baseline onto the type's, which sits
+   higher than the box it is drawn in. */
+.cs-award__note { padding-bottom: 0.45em; }
+
+/* The result has had its rest; the links follow straight on. */
+.cs-award + .cs-onward { padding-top: 0; }
+
+.cs-onward { padding-block: var(--cs-rest) 0; }
+
+/* ------------------------------------------------------------
+   5. MOTION
+   ------------------------------------------------------------
+   The one idea the page borrows from the product: things
+   arrive out of fog. A plate resolves as it is reached, the
+   hero resolves on load, and nothing else moves.
+
+   Reveal state is set by js/museum.js — the theme's observer,
+   reused as it is. A plate carries .ex-reveal, the theme adds
+   .is-visible on approach, and the treatment below is this
+   page's answer to that state.
+   ------------------------------------------------------------ */
+[data-page='case'] .ex-reveal img,
+[data-page='case'] .ex-reveal .cs-text__label,
+[data-page='case'] .ex-reveal .ex-copy,
+[data-page='case'] .ex-reveal .cs-award__mark,
+[data-page='case'] .ex-reveal .cs-award__result,
+[data-page='case'] .ex-reveal .cs-mark__label {
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(14px);
+  transition:
+    opacity 900ms var(--ease),
+    filter 1200ms var(--ease),
+    transform 1200ms var(--ease);
+}
+[data-page='case'] .ex-reveal .ex-copy { transition-delay: 110ms; }
+[data-page='case'] .ex-reveal .cs-award__result { transition-delay: 60ms; }
+
+[data-page='case'] .ex-reveal .cs-mark__rule {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 900ms var(--ease);
+}
+
+[data-page='case'] .ex-reveal.is-visible img,
+[data-page='case'] .ex-reveal.is-visible .cs-text__label,
+[data-page='case'] .ex-reveal.is-visible .ex-copy,
+[data-page='case'] .ex-reveal.is-visible .cs-award__mark,
+[data-page='case'] .ex-reveal.is-visible .cs-award__result,
+[data-page='case'] .ex-reveal.is-visible .cs-mark__label {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+[data-page='case'] .ex-reveal.is-visible .cs-mark__rule { transform: scaleX(1); }
+
+/* Load sequence — picture clears, then the title, then the facts. */
+@keyframes cs-clear {
+  from { opacity: 0; filter: blur(22px); transform: scale(1.04); }
+  to   { opacity: 1; filter: blur(0);    transform: scale(1); }
+}
+/* Same arrival, landing on the portrait crop rather than 1. */
+@keyframes cs-clear-cropped {
+  from { opacity: 0; filter: blur(22px); transform: scale(1.82); }
+  to   { opacity: 1; filter: blur(0);    transform: scale(1.75); }
+}
+
+@keyframes cs-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.cs-hero__img  { animation: cs-clear 1600ms var(--ease) both; }
+.cs-hero__meta { animation: cs-rise 900ms var(--ease) 620ms both; }
+
+/* ------------------------------------------------------------
+   6. RESPONSIVE
+   ------------------------------------------------------------ */
+@media (max-width: 1024px) {
+  .cs-award__body { grid-template-columns: minmax(0, 1fr); }
+  .cs-award__note { padding-bottom: 0; }
+
+  :root[data-page='case'] { --cs-gap: clamp(48px, 7vw, 96px); }
+}
+
+@media (max-width: 768px) {
+  /* The margin narrows but stays: a board is almost the whole
+     screen here, and the strip of ground either side is what
+     keeps it a picture on a page rather than the page itself. */
+  :root[data-page='case'] {
+    --cs-edge: 12px;
+    --cs-gap:  clamp(40px, 11vw, 72px);
+    --cs-rest: clamp(72px, 20vw, 132px);
+  }
+
+  .cs-hero { min-height: 88vh; min-height: 88svh; }
+
+  /* A portrait viewport shows a cover-cropped picture's full
+     height. Where the source is a cut-out with transparent
+     corners, that means the corners come with it — so the
+     picture is scaled past cover until only its solid middle
+     band is in frame. Landscape viewports never see them. */
+  :root[data-ground='paper'] .cs-hero__img {
+    transform: scale(1.75);
+    transform-origin: 50% 50%;
+    animation-name: cs-clear-cropped;
+  }
+
+  /* A portrait crop of a 16:9 frame keeps a third of it. Held
+     left, that third is the hand and the wand rather than the
+     empty ground they were photographed against. */
+  .cs-hero__img { object-position: 24% 46%; }
+
+  /* A portrait crop is a taller frame for the same ramp, so the
+     stops move up to keep the band the same depth on screen. */
+  .cs-hero::after {
+    background:
+      linear-gradient(to top,
+        rgba(7, 7, 7, 0.68) 0%,
+        rgba(7, 7, 7, 0.38) 11%,
+        rgba(7, 7, 7, 0.14) 22%,
+        rgba(7, 7, 7, 0) 34%);
+  }
+}
+
+/* ------------------------------------------------------------
+   7. REDUCED MOTION
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  [data-page='case'] .ex-reveal img,
+  [data-page='case'] .ex-reveal .cs-text__label,
+  [data-page='case'] .ex-reveal .ex-copy,
+  [data-page='case'] .ex-reveal .cs-award__mark,
+  [data-page='case'] .ex-reveal .cs-award__result,
+  [data-page='case'] .ex-reveal .cs-mark__label {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+  [data-page='case'] .ex-reveal .ex-copy { transition-delay: 110ms; }
+[data-page='case'] .ex-reveal .cs-award__result { transition-delay: 60ms; }
+
+[data-page='case'] .ex-reveal .cs-mark__rule { transform: none; transition: none; }
+
+  .cs-hero__img,
+  .cs-hero__meta { animation: none; }
+}

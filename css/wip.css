@@ -1,0 +1,119 @@
+/* ============================================================
+   WIP — a gallery for work still being made
+   ------------------------------------------------------------
+   A third layer, over css/museum.css and css/case.css. It adds
+   two things and reuses everything else:
+
+     1. The opening — a project that states its own status
+        instead of introducing itself.
+     2. A grid. A case study runs one picture at a time because
+        its boards are a sequence; a set of renders of a single
+        object is a collection, and a collection is read faster
+        side by side than one screen at a time.
+
+   Prefix: .wip-
+
+   Opt in per page, after both of the others:
+     <html data-theme="museum" data-page="case">
+     css/museum.css, css/case.css, then this file.
+
+   Contents
+     0  Tokens
+     1  Opening
+     2  Gallery
+     3  Responsive
+     4  Reduced motion
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   0. TOKENS
+   ------------------------------------------------------------ */
+:root[data-page='case'] {
+  --wip-gap: clamp(14px, 2vw, 36px);
+}
+
+/* ------------------------------------------------------------
+   1. OPENING
+   ------------------------------------------------------------
+   No hero picture. The page opens on the fact that matters —
+   that this is unfinished — and the renders start underneath
+   it. The status is set at the same size as the name, in the
+   one accent the site has, because it is half the title.
+   ------------------------------------------------------------ */
+.wip-open {
+  padding-block: calc(var(--nav-h) + var(--cs-rest)) var(--cs-rest);
+}
+
+.wip-open__title {
+  font-size: clamp(38px, 7.4vw, 124px);
+  font-weight: var(--fw-bold);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* The second line of the title, not a label on it. */
+.wip-open__status {
+  display: block;
+  color: var(--accent);
+}
+
+.wip-open__note {
+  margin-top: var(--s-6);
+  max-width: 46ch;
+}
+
+/* The facts, on one hairline, under the opening. */
+.wip-open__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-5);
+  margin-top: var(--s-7);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--rule);
+}
+
+/* ------------------------------------------------------------
+   2. GALLERY
+   ------------------------------------------------------------
+   Two columns, held near the page edges. The renders are a set
+   being looked at, not a sequence being read, so they are shown
+   together rather than one screen at a time.
+
+   Every frame keeps its own proportions — height is always
+   derived from the file — so a row is as tall as the taller of
+   its two pictures and the shorter one simply ends earlier. No
+   cropping, and nothing drawn around them: on this ground the
+   renders are already their own edges.
+   ------------------------------------------------------------ */
+.wip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--wip-gap);
+  align-items: start;
+
+  max-width: 2400px;
+  margin: 0 auto;
+  padding: 0 var(--cs-edge);
+}
+
+.wip-grid img {
+  width: 100%;
+  height: auto;
+}
+
+/* ------------------------------------------------------------
+   3. RESPONSIVE
+   ------------------------------------------------------------ */
+@media (max-width: 768px) {
+  /* One column: at this width two would make every render a
+     thumbnail, which is the opposite of the point. */
+  .wip-grid { grid-template-columns: minmax(0, 1fr); }
+
+  :root[data-page='case'] { --wip-gap: 12px; }
+
+  .wip-open { padding-block: calc(var(--nav-h) + var(--s-8)) var(--s-8); }
+  .wip-open__note { margin-top: var(--s-5); }
+  .wip-open__meta { margin-top: var(--s-6); }
+}

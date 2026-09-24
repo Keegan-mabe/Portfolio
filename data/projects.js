@@ -44,7 +44,7 @@ window.KO_PROJECTS = [
     num: '02',
     name: 'Pure Mountain Fun',
     slug: 'pmf',
-    category: 'Industrial Design',
+    category: 'Design Competition',
     year: '2025',
     image: {
       src: 'projects/pmf/images/PMF/Main.png',
@@ -88,6 +88,18 @@ window.KO_PROJECTS = [
     imageWide: {
       src: 'projects/mnlegit/images/MNLegit/WIDEBOI-1.png',
       alt: 'MNLegit, apparel campaign photography',
+      focal: '50% 50%'
+    }
+  },
+  {
+    num: '06',
+    name: 'Write and Reveal Wand',
+    slug: 'write-and-reveal',
+    category: 'Product Design',
+    year: '2025',
+    image: {
+      src: 'projects/write-and-reveal/images/Hero.png.webp',
+      alt: 'Write and Reveal Wand, the wand held in a hand',
       focal: '50% 50%'
     }
   }
