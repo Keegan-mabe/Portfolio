@@ -1,203 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="museum" data-page="case" data-ground="white">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grill Speaker — K.O. Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../css/project.css">
+  <title>Grill Speaker — Keegan O'Neill</title>
+  <meta name="description" content="Grill Speaker — a modular Bluetooth speaker for street vendors, with swappable panels, finishes and mounts. Industrial design case study, 2025.">
+  <link rel="stylesheet" href="../../css/museum.css">
+  <link rel="stylesheet" href="../../css/case.css">
+
+  <!-- The reveal is an enhancement: without script nothing would
+       ever be told to arrive, so the page starts arrived. -->
+  <noscript>
+    <style>
+      [data-page='case'] .ex-reveal img,
+      [data-page='case'] .ex-reveal .cs-text__label,
+      [data-page='case'] .ex-reveal .ex-copy,
+      [data-page='case'] .ex-reveal .cs-mark__label {
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+      [data-page='case'] .ex-reveal .cs-mark__rule { transform: none; }
+    </style>
+  </noscript>
 </head>
 <body>
 
   <!-- ============================================================
        Navigation
        ============================================================ -->
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="../../index.html" class="nav__logo">K.O.</a>
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
+  <nav class="ex-nav">
+    <div class="ex-nav__inner">
+      <a href="../../index.html" class="ex-nav__mark">K.O.</a>
+
+      <button class="ex-nav__toggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span>
       </button>
-      <ul class="nav__links" id="navLinks">
-        <li><a href="../../index.html" class="nav__link">Home</a></li>
-        <li><a href="../index.html" class="nav__link">Products</a></li>
-        <li><a href="../../ux/index.html" class="nav__link">UX</a></li>
-        <li><a href="../../about/index.html" class="nav__link">About</a></li>
+
+      <ul class="ex-nav__links">
+        <li><a href="../index.html" class="ex-nav__link" aria-current="page">Products</a></li>
+        <li><a href="../../ux/index.html" class="ex-nav__link">UX</a></li>
+        <li><a href="../../about/index.html" class="ex-nav__link">About</a></li>
       </ul>
     </div>
   </nav>
 
+  <main>
+
+    <!-- ========================================================
+         Hero — the render centred on white, its name set over
+         the field around it.
+         ======================================================== -->
+    <header class="cs-hero cs-hero--object">
+      <img src="images/Grill/Main.png"
+           alt="Grill Speaker, its swappable panels fanned out from the body"
+           class="cs-hero__img"
+           width="3840" height="6091"
+           fetchpriority="high" decoding="async">
+
+      <div class="cs-hero__block">
+        <div class="ex-shell">
+          <h1 class="cs-hero__title">Grill Speaker</h1>
+          <div class="cs-hero__meta">
+            <span class="ex-annot">2025</span>
+            <i aria-hidden="true"></i>
+            <span class="ex-annot">Consumer electronics</span>
+            <i aria-hidden="true"></i>
+            <span class="ex-annot">6 week project</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================
+         Overview
+         ======================================================== -->
+    <section class="cs-text ex-reveal">
+      <div class="ex-shell">
+        <span class="ex-annot ex-annot--ink cs-text__label">Overview</span>
+        <p class="ex-copy ex-copy--prose">
+          A modular Bluetooth speaker built to be personalized. Panels, finishes and components swap out, so each owner builds a setup that fits their style, and the platform grows with new add-ons over time.
+        </p>
+      </div>
+    </section>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/8.png" alt="Competitors: JBL Flip 6, Beats Pill, Bose SoundLink Flex, Marshall Kilburn III, Tribit StormBox 2, B&amp;O Beoplay A2" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/7.png" alt="Exploded view sketch of a disassembled Bluetooth speaker, components labelled" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <!-- ========================================================
+         Research
+         ======================================================== -->
+    <section class="cs-text ex-reveal">
+      <div class="ex-shell">
+        <span class="ex-annot ex-annot--ink cs-text__label">Research</span>
+        <p class="ex-copy ex-copy--prose">
+          It started with a full teardown of an existing speaker, then turned to the assigned users: street vendors. How they move, set up and work through a day shaped every decision on portability, durability and flexibility.
+        </p>
+      </div>
+    </section>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/11.png" alt="User research: street vendors, with quotes on margins, tariffs and health regulation" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/13.png" alt="Connected Cloud: problems, keywords and user needs drawn from two vendor stalls" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/16.png" alt="IDEO methods: affinity diagramming of vendor interviews beside a food truck" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <!-- ========================================================
+         Development
+         ======================================================== -->
+    <section class="cs-text ex-reveal">
+      <div class="ex-shell">
+        <span class="ex-annot ex-annot--ink cs-text__label">Development</span>
+        <p class="ex-copy ex-copy--prose">
+          Panels, finishes and mounting were treated as variables, not fixed decisions, so the speaker adapts to the person using it and stays useful as their needs change.
+        </p>
+      </div>
+    </section>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/18.png" alt="Sketch ideation: boxy speaker forms with handles and grilles" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/47.png" alt="Final model tech assembly: speaker, motherboard and battery inside the frame" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/Grill/50.png" alt="Packaging: sleeve-style cardstock box, and the speaker on a vendor's counter" width="1920" height="1080" loading="lazy" decoding="async">
+    </figure>
+
+    <!-- ========================================================
+         Final — the expanded render, at object scale, on the
+         white it was made on
+         ======================================================== -->
+    <figure class="cs-plate cs-plate--narrow ex-reveal">
+      <img src="images/Grill/ExpandedGrill.png" alt="Grill Speaker with its panels expanded, under the Grill wordmark" width="1696" height="1468" loading="lazy" decoding="async">
+    </figure>
+
+    <!-- ========================================================
+         Onward
+         ======================================================== -->
+    <section class="cs-onward">
+      <div class="ex-shell">
+        <div class="ex-onward">
+          <a href="../index.html" class="ex-link">
+            All products <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="../../ux/index.html" class="ex-link">
+            UX <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="../../index.html" class="ex-link">
+            Home <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
   <!-- ============================================================
-       01 — Hero (cover, unchanged)
+       Footer
        ============================================================ -->
-  <section class="panel" id="panel-hero">
-    <div class="panel__bg" style="background-image: url('images/Grill/Main.png');"></div>
-    <div class="panel__overlay panel__overlay--bottom"></div>
-    <div class="panel__content">
-      <span class="panel__eyebrow">Product Design — 2025</span>
-      <h1 class="panel__title">Grill<br>Speaker</h1>
-      <span class="panel__subtitle">Industrial Design &nbsp;/&nbsp; Consumer Electronics</span>
-      <span class="panel__caption">Timeline &nbsp;/&nbsp; 6 Weeks</span>
+  <footer class="ex-foot">
+    <div class="ex-shell ex-foot__inner">
+      <span class="ex-annot ex-annot--ink">Keegan O&rsquo;Neill</span>
+      <span class="ex-annot">Industrial &amp; product design</span>
+      <span class="ex-annot">2026</span>
     </div>
-  </section>
+  </footer>
 
-  <div class="divider"></div>
-
-  <!-- ============================================================
-       Overview — text only
-       ============================================================ -->
-  <div class="text-block" id="text-overview">
-    <div class="text-block__inner">
-      <span class="panel__eyebrow">Overview</span>
-      <h2 class="panel__heading">Built to be yours.</h2>
-      <p class="panel__body">
-        A modular speaker system designed around personalization, customization, and long-term expandability. GRILL lets users swap components, change finishes, and build a setup that fits their own style. The platform is built to grow with future add-ons, accessories, and new configurations over time.
-      </p>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Image: 8.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-1">
-    <div class="panel__bg" style="background-image: url('images/Grill/8.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Image: 7.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-2">
-    <div class="panel__bg" style="background-image: url('images/Grill/7.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ============================================================
-       Research — text only
-       ============================================================ -->
-  <div class="text-block" id="text-research">
-    <div class="text-block__inner">
-      <span class="panel__eyebrow">Research</span>
-      <h2 class="panel__heading">Starting with the system.</h2>
-      <p class="panel__body">
-        The project began by fully disassembling an existing Bluetooth speaker to understand how it was built from the inside out. From there, research shifted toward the assigned user group: street vendors. Understanding how they move, set up, and operate throughout the day shaped every decision about portability, durability, and flexibility.
-      </p>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Image: 11.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-3">
-    <div class="panel__bg" style="background-image: url('images/Grill/11.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Image: 13.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-4">
-    <div class="panel__bg" style="background-image: url('images/Grill/13.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Image: 16.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-5">
-    <div class="panel__bg" style="background-image: url('images/Grill/16.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ============================================================
-       Prototyping — text only
-       ============================================================ -->
-  <div class="text-block" id="text-proto">
-    <div class="text-block__inner">
-      <span class="panel__eyebrow">Design Development</span>
-      <h2 class="panel__heading">Designing for flexibility.</h2>
-      <p class="panel__body">
-        The concept developed around interchangeable components that users could swap out to match their setup, style, or environment. Panels, finishes, and mounting configurations were treated as variables rather than fixed decisions. The goal was a product that adapts to the person using it and stays useful as their needs change over time.
-      </p>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Image: 18.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-6">
-    <div class="panel__bg" style="background-image: url('images/Grill/18.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Image: 47.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-7">
-    <div class="panel__bg" style="background-image: url('images/Grill/47.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Image: 50.png -->
-  <section class="panel panel--contain panel--light-bg" id="panel-8">
-    <div class="panel__bg" style="background-image: url('images/Grill/50.png');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ============================================================
-       Closing — ExpandedGrill + tagline (cover, text overlay)
-       ============================================================ -->
-  <section class="panel panel--dark-bg panel--close" id="panel-closing">
-    <div class="panel__bg panel__bg--soft" style="background-image: url('images/Grill/ExpandedGrill.png');"></div>
-    <div class="panel__overlay panel__overlay--soft"></div>
-    <div class="panel__content">
-      <p class="panel__tagline">Built to<br><em>adapt.</em></p>
-      <a href="../../index.html" class="panel__back">
-        <span class="panel__back-arrow">←</span> Back to Portfolio
-      </a>
-    </div>
-  </section>
-
-  <script>
-    /* Navigation scroll state */
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 24);
-    }, { passive: true });
-
-    /* Mobile nav toggle */
-    const navToggle = document.getElementById('navToggle');
-    const navLinks  = document.getElementById('navLinks');
-
-    navToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      navToggle.classList.toggle('open', isOpen);
-    });
-
-    navLinks.querySelectorAll('.nav__link').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        navToggle.classList.remove('open');
-      });
-    });
-
-    /* Observer — activates panels (Ken Burns) and text blocks (fade-in) */
-    const observables = document.querySelectorAll('.panel, .text-block');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        entry.target.classList.toggle('is-active', entry.isIntersecting);
-      });
-    }, { threshold: 0.25 });
-
-    observables.forEach(el => observer.observe(el));
-
-    /* Activate hero immediately */
-    document.getElementById('panel-hero').classList.add('is-active');
-  </script>
-
+  <script src="../../js/museum.js"></script>
 </body>
 </html>

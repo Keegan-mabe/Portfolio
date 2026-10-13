@@ -81,6 +81,18 @@
   --panel: #e7e9ec;
 }
 
+/* White — for renders made on pure white. Any other shade would
+   draw the edge of every file; on white the object floats and
+   the boards, which are cream, carry their own edge. */
+:root[data-page='case'][data-ground='white'] {
+  --paper: #ffffff;
+  --ink:   #0b0b0b;
+  --ink-2: #63666b;
+  --ink-3: #9a9da3;
+  --rule:  #e2e2e2;
+  --panel: #f2f2f2;
+}
+
 :root[data-page='case'] body { background: var(--paper); }
 
 /* ------------------------------------------------------------
@@ -140,7 +152,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 50%;
+  /* A page can set its own crop, wide and narrow, on the hero. */
+  object-position: var(--cs-focal, 50% 50%);
 }
 
 /* One shallow ramp along the bottom edge — enough to hold a
@@ -328,6 +341,145 @@
 .cs-onward { padding-block: var(--cs-rest) 0; }
 
 /* ------------------------------------------------------------
+   4b. MORE PLATES
+   ------------------------------------------------------------
+   For work that isn't all 16:9 boards. Each one keeps the
+   picture's own proportions; none of them crop.
+   ------------------------------------------------------------ */
+
+/* Two pictures of one ratio, read as a spread. They share the
+   board width, so a pair and a single board end on the same
+   edges. */
+.cs-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--cs-seam);
+  align-items: start;
+}
+:root[data-page='case'] { --cs-seam: clamp(8px, 1vw, 16px); }
+
+/* A tall picture shown whole: held to the height of the screen
+   rather than the width of the board, so the full sheet can be
+   read without scrolling through it. */
+.cs-plate--tall img {
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100vh - var(--nav-h) - var(--s-6));
+  max-height: calc(100svh - var(--nav-h) - var(--s-6));
+  margin-inline: auto;
+}
+
+/* An object shown at the size of an object, not of a board. */
+.cs-plate--narrow { max-width: calc(1120px + var(--cs-edge) * 2); }
+
+/* A plate that opens full size. */
+.cs-zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.cs-lightbox {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--cs-edge);
+  border: 0;
+  background: rgba(7, 7, 7, 0.94);
+  cursor: zoom-out;
+}
+.cs-lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-lightbox::backdrop { background: transparent; }
+.cs-lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* A short list of facts under a text label — roles, findings.
+   The theme's prose colour and size; a hairline between items
+   instead of bullets, so it reads as a register, not a slide. */
+.cs-list {
+  list-style: none;
+  max-width: 62ch;
+  border-top: 1px solid var(--rule);
+}
+.cs-list li {
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-2);
+}
+.cs-list--cols {
+  max-width: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+}
+.ex-copy + .cs-list { margin-top: var(--s-5); }
+
+/* Coda — the last picture beside the last word. The picture
+   keeps its ratio; the text sits on its lower edge. */
+.cs-coda {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--s-6) var(--s-8);
+  align-items: end;
+  max-width: calc(var(--cs-board) + var(--cs-edge) * 2);
+  margin: 0 auto;
+  padding: var(--cs-rest) var(--cs-edge) 0;
+}
+.cs-coda img { width: 100%; height: auto; }
+.cs-coda__text { padding-right: var(--gutter); }
+.cs-coda + .cs-onward { padding-top: var(--cs-rest); }
+
+/* ------------------------------------------------------------
+   4c. OBJECT HERO
+   ------------------------------------------------------------
+   For a render made on white. The page is the same white, so
+   the file has no visible edge: the object sits in the middle
+   of the screen as an object, at its own scale, and the name
+   is set over the field around it like the other heroes.
+
+   The picture is contained, never cropped. Its box runs past
+   the top and bottom of the hero so a tall render is sized by
+   the object in it rather than by its empty margin; only that
+   white margin leaves the frame.
+   ------------------------------------------------------------ */
+.cs-hero--object .cs-hero__img {
+  inset: -45% -25%;
+  width: 150%;
+  max-width: none;
+  height: 190%;
+  object-fit: contain;
+  object-position: 50% 50%;
+}
+
+/* A white ramp, not a dark one: it settles the reflection
+   under the type so the name reads in ink, and is gone well
+   before it reaches the object. */
+.cs-hero.cs-hero--object::after {
+  background:
+    linear-gradient(to top,
+      rgba(255, 255, 255, 0.88) 0%,
+      rgba(255, 255, 255, 0.55) 12%,
+      rgba(255, 255, 255, 0) 30%);
+}
+
+.cs-hero--object .cs-hero__title { color: var(--ink); }
+.cs-hero--object .cs-hero__meta .ex-annot { color: var(--ink-2); }
+.cs-hero--object .cs-hero__meta i { background: var(--ink-3); }
+
+/* ------------------------------------------------------------
    5. MOTION
    ------------------------------------------------------------
    The one idea the page borrows from the product: things
@@ -344,6 +496,7 @@
 [data-page='case'] .ex-reveal .ex-copy,
 [data-page='case'] .ex-reveal .cs-award__mark,
 [data-page='case'] .ex-reveal .cs-award__result,
+[data-page='case'] .ex-reveal .cs-list,
 [data-page='case'] .ex-reveal .cs-mark__label {
   opacity: 0;
   filter: blur(14px);
@@ -354,6 +507,7 @@
     transform 1200ms var(--ease);
 }
 [data-page='case'] .ex-reveal .ex-copy { transition-delay: 110ms; }
+[data-page='case'] .ex-reveal .cs-list { transition-delay: 200ms; }
 [data-page='case'] .ex-reveal .cs-award__result { transition-delay: 60ms; }
 
 [data-page='case'] .ex-reveal .cs-mark__rule {
@@ -367,6 +521,7 @@
 [data-page='case'] .ex-reveal.is-visible .ex-copy,
 [data-page='case'] .ex-reveal.is-visible .cs-award__mark,
 [data-page='case'] .ex-reveal.is-visible .cs-award__result,
+[data-page='case'] .ex-reveal.is-visible .cs-list,
 [data-page='case'] .ex-reveal.is-visible .cs-mark__label {
   opacity: 1;
   filter: blur(0);
@@ -400,6 +555,10 @@
   .cs-award__body { grid-template-columns: minmax(0, 1fr); }
   .cs-award__note { padding-bottom: 0; }
 
+  .cs-list--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs-coda { grid-template-columns: minmax(0, 1fr); }
+  .cs-coda__text { padding-inline: calc(var(--gutter) - var(--cs-edge)); }
+
   :root[data-page='case'] { --cs-gap: clamp(48px, 7vw, 96px); }
 }
 
@@ -415,12 +574,25 @@
 
   .cs-hero { min-height: 88vh; min-height: 88svh; }
 
+  /* Pairs become a sequence: two portraits at half a phone's
+     width are too small to be photographs. */
+  .cs-pair { grid-template-columns: minmax(0, 1fr); }
+  .cs-list--cols { grid-template-columns: minmax(0, 1fr); }
+
+  /* On a phone the render is sized by the screen's width, and
+     at the desktop zoom its handles meet the edge — so it comes
+     back far enough to keep the whole object in frame. */
+  .cs-hero--object .cs-hero__img {
+    inset: -45% -10%;
+    width: 120%;
+  }
+
   /* A portrait viewport shows a cover-cropped picture's full
      height. Where the source is a cut-out with transparent
      corners, that means the corners come with it — so the
      picture is scaled past cover until only its solid middle
      band is in frame. Landscape viewports never see them. */
-  :root[data-ground='paper'] .cs-hero__img {
+  .cs-hero__img--cutout {
     transform: scale(1.75);
     transform-origin: 50% 50%;
     animation-name: cs-clear-cropped;
@@ -429,7 +601,7 @@
   /* A portrait crop of a 16:9 frame keeps a third of it. Held
      left, that third is the hand and the wand rather than the
      empty ground they were photographed against. */
-  .cs-hero__img { object-position: 24% 46%; }
+  .cs-hero__img { object-position: var(--cs-focal-m, 24% 46%); }
 
   /* A portrait crop is a taller frame for the same ramp, so the
      stops move up to keep the band the same depth on screen. */
@@ -452,6 +624,7 @@
   [data-page='case'] .ex-reveal .ex-copy,
   [data-page='case'] .ex-reveal .cs-award__mark,
   [data-page='case'] .ex-reveal .cs-award__result,
+  [data-page='case'] .ex-reveal .cs-list,
   [data-page='case'] .ex-reveal .cs-mark__label {
     opacity: 1;
     filter: none;

@@ -1,263 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="museum" data-page="case">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MNLegit — K.O. Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../css/project.css">
-  <style>
-    .role-list {
-      list-style: none;
-      margin-top: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
+  <title>MNLegit — Keegan O'Neill</title>
+  <meta name="description" content="MNLegit — a streetwear clothing release built during an internship: apparel design, product photography, editing, campaign visuals and online launch.">
+  <link rel="stylesheet" href="../../css/museum.css">
+  <link rel="stylesheet" href="../../css/case.css">
 
-    .role-list li {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.6);
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
-    }
-
-    .role-list li::before {
-      content: '';
-      display: inline-block;
-      width: 18px;
-      height: 1px;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .role-list li:first-child {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    /* Side-by-side portrait pair */
-    .panel-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      height: 140vh;
-    }
-
-    .panel-pair__col {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .panel-pair__bg {
-      position: absolute;
-      inset: -6%;
-      background-size: cover;
-      background-position: center;
-      transform: scale(1.0);
-      transition: transform 10s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform;
-    }
-
-    .panel-pair.is-active .panel-pair__bg {
-      transform: scale(1.06);
-    }
-
-    @media (max-width: 640px) {
-      .panel-pair {
-        grid-template-columns: 1fr;
-        height: auto;
+  <!-- The reveal is an enhancement: without script nothing would
+       ever be told to arrive, so the page starts arrived. -->
+  <noscript>
+    <style>
+      [data-page='case'] .ex-reveal img,
+      [data-page='case'] .ex-reveal .cs-text__label,
+      [data-page='case'] .ex-reveal .ex-copy,
+      [data-page='case'] .ex-reveal .cs-list,
+      [data-page='case'] .ex-reveal .cs-mark__label {
+        opacity: 1;
+        filter: none;
+        transform: none;
       }
-      .panel-pair__col { height: 80vh; }
-    }
-
-    .text-block.is-active .role-list li:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
-    .text-block.is-active .role-list li:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.22s; }
-    .text-block.is-active .role-list li:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.29s; }
-    .text-block.is-active .role-list li:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.36s; }
-    .text-block.is-active .role-list li:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.43s; }
-    .text-block.is-active .role-list li:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 0.50s; }
-  </style>
+      [data-page='case'] .ex-reveal .cs-mark__rule { transform: none; }
+    </style>
+  </noscript>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="../../index.html" class="nav__logo">K.O.</a>
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
+  <!-- ============================================================
+       Navigation
+       ============================================================ -->
+  <nav class="ex-nav">
+    <div class="ex-nav__inner">
+      <a href="../../index.html" class="ex-nav__mark">K.O.</a>
+
+      <button class="ex-nav__toggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span>
       </button>
-      <ul class="nav__links" id="navLinks">
-        <li><a href="../../index.html" class="nav__link">Home</a></li>
-        <li><a href="../index.html" class="nav__link">Products</a></li>
-        <li><a href="../../ux/index.html" class="nav__link">UX</a></li>
-        <li><a href="../../about/index.html" class="nav__link">About</a></li>
+
+      <ul class="ex-nav__links">
+        <li><a href="../index.html" class="ex-nav__link" aria-current="page">Products</a></li>
+        <li><a href="../../ux/index.html" class="ex-nav__link">UX</a></li>
+        <li><a href="../../about/index.html" class="ex-nav__link">About</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- 01 — Hero -->
-  <section class="panel" id="panel-hero">
-    <div class="panel__bg" style="background-image: url('images/MNLegit/LegitClothing-7417.jpg'); background-position: center 60%;"></div>
-    <div class="panel__overlay panel__overlay--bottom"></div>
-    <div class="panel__content">
-      <span class="panel__eyebrow">Brand / Content / Product — 2024</span>
-      <h1 class="panel__title">MNLegit</h1>
-      <span class="panel__subtitle">Apparel &nbsp;/&nbsp; Photography &nbsp;/&nbsp; Campaign</span>
+  <main>
+
+    <!-- ========================================================
+         Hero — the label, close. The campaign is photography,
+         so the page is a dark ground and the pictures do the
+         talking.
+         ======================================================== -->
+    <header class="cs-hero" style="--cs-focal: 50% 62%; --cs-focal-m: 50% 60%;">
+      <img src="images/MNLegit/LegitClothing-7417.jpg"
+           alt="Close-up of the MNLegit woven label on a pair of jeans"
+           class="cs-hero__img"
+           width="3648" height="5472"
+           fetchpriority="high" decoding="async">
+
+      <div class="cs-hero__block">
+        <div class="ex-shell">
+          <h1 class="cs-hero__title">MNLegit</h1>
+          <div class="cs-hero__meta">
+            <span class="ex-annot">2025</span>
+            <i aria-hidden="true"></i>
+            <span class="ex-annot">Apparel and campaign</span>
+            <i aria-hidden="true"></i>
+            <span class="ex-annot">Internship</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================
+         Overview
+         ======================================================== -->
+    <section class="cs-text ex-reveal">
+      <div class="ex-shell">
+        <span class="ex-annot ex-annot--ink cs-text__label">Overview</span>
+        <p class="ex-copy ex-copy--prose">
+          A full creative rollout from my internship: apparel, photography, editing, marketing and launch strategy, carried as one clothing release.
+        </p>
+      </div>
+    </section>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <img src="images/MNLegit/LegitClothing-7543.jpg" alt="Two models on a bench reading an MNLegit newspaper against a brick wall" width="3544" height="2928" loading="lazy" decoding="async">
+    </figure>
+
+    <!-- ========================================================
+         Role
+         ======================================================== -->
+    <section class="cs-text ex-reveal">
+      <div class="ex-shell">
+        <span class="ex-annot ex-annot--ink cs-text__label">Role</span>
+        <ul class="cs-list cs-list--cols">
+          <li>Apparel design</li>
+          <li>Product photography</li>
+          <li>Photo editing</li>
+          <li>Campaign visuals</li>
+          <li>Social media marketing</li>
+          <li>Online rollout</li>
+        </ul>
+      </div>
+    </section>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <div class="cs-pair">
+        <img src="images/MNLegit/LegitClothing-7401.jpg" alt="Two models in MNLegit hoodie and tee against a stone wall" width="2809" height="4214" loading="lazy" decoding="async">
+        <img src="images/MNLegit/LegitClothing-7449.jpg" alt="Two models in MNLegit tees against a stone wall" width="2466" height="3699" loading="lazy" decoding="async">
+      </div>
+    </figure>
+
+    <!-- ========================================================
+         Creative direction
+         ======================================================== -->
+    <section class="cs-text ex-reveal">
+      <div class="ex-shell">
+        <span class="ex-annot ex-annot--ink cs-text__label">Creative direction</span>
+        <p class="ex-copy ex-copy--prose">
+          A streetwear identity that feels local, raw and authentic, while still working as a polished product launch.
+        </p>
+      </div>
+    </section>
+
+    <!-- The panorama — the one picture on the page that runs
+         edge to edge, because it was made to. -->
+    <figure class="cs-plate cs-plate--final ex-reveal">
+      <img src="images/MNLegit/WIDEBOI-1.png" alt="Campaign panorama: the full cast across the stone wall, bench and newspaper set" width="5400" height="1350" loading="lazy" decoding="async">
+    </figure>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <div class="cs-pair">
+        <img src="images/MNLegit/LegitClothing-7470.jpg" alt="MNLegit label stitched on a black mesh jersey" width="3067" height="4600" loading="lazy" decoding="async">
+        <img src="images/MNLegit/LegitClothing-7564.jpg" alt="Model in an MNLegit tee on a rock by the river, Minneapolis skyline behind" width="3544" height="5316" loading="lazy" decoding="async">
+      </div>
+    </figure>
+
+    <figure class="cs-plate cs-plate--board ex-reveal">
+      <div class="cs-pair">
+        <img src="images/MNLegit/LegitClothing-7574.jpg" alt="Model in a cropped MNLegit tee by the river, Stone Arch Bridge behind" width="3431" height="5147" loading="lazy" decoding="async">
+        <img src="images/MNLegit/LegitClothing-7586.jpg" alt="Model in an olive MNLegit tee by the river, downtown Minneapolis behind" width="2621" height="3931" loading="lazy" decoding="async">
+      </div>
+    </figure>
+
+    <!-- ========================================================
+         Outcome
+         ======================================================== -->
+    <section class="cs-text ex-reveal">
+      <div class="ex-shell">
+        <span class="ex-annot ex-annot--ink cs-text__label">Outcome</span>
+        <p class="ex-copy ex-copy--prose">
+          Product, photography and marketing launched together as one brand moment, not just a clothing drop.
+        </p>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         Onward
+         ======================================================== -->
+    <section class="cs-onward">
+      <div class="ex-shell">
+        <div class="ex-onward">
+          <a href="../index.html" class="ex-link">
+            All products <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="../../ux/index.html" class="ex-link">
+            UX <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="../../index.html" class="ex-link">
+            Home <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       Footer
+       ============================================================ -->
+  <footer class="ex-foot">
+    <div class="ex-shell ex-foot__inner">
+      <span class="ex-annot ex-annot--ink">Keegan O&rsquo;Neill</span>
+      <span class="ex-annot">Industrial &amp; product design</span>
+      <span class="ex-annot">2026</span>
     </div>
-  </section>
+  </footer>
 
-  <div class="divider"></div>
-
-  <!-- Overview -->
-  <div class="text-block" id="text-overview">
-    <div class="text-block__inner">
-      <span class="panel__eyebrow">Overview</span>
-      <h2 class="panel__heading">One full creative rollout.</h2>
-      <p class="panel__body">
-        MNLegit was a full creative rollout developed during my internship, combining apparel design, product photography, editing, marketing, and digital launch strategy into one cohesive clothing release.
-      </p>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Image — model shot -->
-  <section class="panel" id="panel-1">
-    <div class="panel__bg" style="background-image: url('images/MNLegit/LegitClothing-7543.jpg');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Role -->
-  <div class="text-block" id="text-role">
-    <div class="text-block__inner">
-      <span class="panel__eyebrow">Role</span>
-      <h2 class="panel__heading">Across the board.</h2>
-      <ul class="role-list">
-        <li>Apparel design</li>
-        <li>Product photography</li>
-        <li>Photo editing</li>
-        <li>Campaign visuals</li>
-        <li>Social media marketing</li>
-        <li>Online rollout</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Pair — 7401 + 7449 -->
-  <div class="panel-pair" id="panel-pair-1">
-    <div class="panel-pair__col">
-      <div class="panel-pair__bg" style="background-image: url('images/MNLegit/LegitClothing-7401.jpg');"></div>
-    </div>
-    <div class="panel-pair__col">
-      <div class="panel-pair__bg" style="background-image: url('images/MNLegit/LegitClothing-7449.jpg');"></div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Creative Direction -->
-  <div class="text-block" id="text-direction">
-    <div class="text-block__inner">
-      <span class="panel__eyebrow">Creative Direction</span>
-      <h2 class="panel__heading">Local. Raw. Real.</h2>
-      <p class="panel__body">
-        The project focused on building a streetwear-inspired visual identity that felt local, raw, and authentic while still working as a polished product launch.
-      </p>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- WIDEBOI — key wide shot -->
-  <section class="panel" id="panel-wideboi">
-    <div class="panel__bg" style="background-image: url('images/MNLegit/WIDEBOI-1.png'); background-position: center center;"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Pair — 7470 + 7564 -->
-  <div class="panel-pair" id="panel-pair-2">
-    <div class="panel-pair__col">
-      <div class="panel-pair__bg" style="background-image: url('images/MNLegit/LegitClothing-7470.jpg');"></div>
-    </div>
-    <div class="panel-pair__col">
-      <div class="panel-pair__bg" style="background-image: url('images/MNLegit/LegitClothing-7564.jpg');"></div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Single — 7574 -->
-  <section class="panel panel--tall" id="panel-6">
-    <div class="panel__bg" style="background-image: url('images/MNLegit/LegitClothing-7574.jpg');"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Final Outcome -->
-  <section class="panel panel--dark-bg panel--close" id="panel-closing">
-    <div class="panel__bg panel__bg--soft" style="background-image: url('images/MNLegit/LegitClothing-7586.jpg');"></div>
-    <div class="panel__overlay panel__overlay--full"></div>
-    <div class="panel__content">
-      <p class="panel__tagline">Product. Photography.<br><em>Launch.</em></p>
-      <p class="panel__body">
-        The final launch brought together product, photography, and marketing into a complete brand moment rather than just a clothing drop.
-      </p>
-      <a href="../../index.html" class="panel__back">
-        <span class="panel__back-arrow">←</span> Back to Portfolio
-      </a>
-    </div>
-  </section>
-
-  <script>
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 24);
-    }, { passive: true });
-
-    const navToggle = document.getElementById('navToggle');
-    const navLinks  = document.getElementById('navLinks');
-
-    navToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      navToggle.classList.toggle('open', isOpen);
-    });
-
-    navLinks.querySelectorAll('.nav__link').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        navToggle.classList.remove('open');
-      });
-    });
-
-    const observables = document.querySelectorAll('.panel, .text-block, .panel-pair');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        entry.target.classList.toggle('is-active', entry.isIntersecting);
-      });
-    }, { threshold: 0.25 });
-
-    observables.forEach(el => observer.observe(el));
-
-    document.getElementById('panel-hero').classList.add('is-active');
-  </script>
-
+  <script src="../../js/museum.js"></script>
 </body>
 </html>
