@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="museum" data-page="viz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualization — Keegan O'Neill</title>
+  <meta name="description" content="Visualization — a collection of digital renders and visual explorations by Keegan O'Neill.">
+  <link rel="stylesheet" href="../css/museum.css">
+  <link rel="stylesheet" href="../css/viz.css">
+
+  <!-- The reveal is an enhancement: without script nothing would
+       ever be told to arrive, so the wall starts hung. -->
+  <noscript>
+    <style>
+      .ex-reveal .vz-piece { clip-path: none; }
+      .ex-reveal .vz-piece img { transform: none; }
+      .vz-piece { cursor: default; }
+    </style>
+  </noscript>
+</head>
+<body>
+
+  <!-- ============================================================
+       Navigation
+       ============================================================ -->
+  <nav class="ex-nav">
+    <div class="ex-nav__inner">
+      <a href="../index.html" class="ex-nav__mark">K.O.</a>
+
+      <button class="ex-nav__toggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+
+      <ul class="ex-nav__links">
+        <li><a href="../projects/index.html" class="ex-nav__link">Products</a></li>
+        <li><a href="../ux/index.html" class="ex-nav__link">UX</a></li>
+        <li><a href="index.html" class="ex-nav__link" aria-current="page">VIZ</a></li>
+        <li><a href="../about/index.html" class="ex-nav__link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ========================================================
+         Page header — the title alone
+         ======================================================== -->
+    <header class="ex-page vz-head">
+      <div class="ex-shell">
+        <h1 class="ex-page__title">Visualization</h1>
+      </div>
+    </header>
+
+    <!-- ========================================================
+         The wall — two columns, every picture whole. Web sizes
+         are in web/; the originals beside this page are untouched
+         and open in the viewer on large screens.
+         ======================================================== -->
+    <section class="ex-shell" aria-label="Gallery">
+      <div class="vz-wall">
+
+        <!-- Left column: the camera, then the bikes -->
+        <div class="vz-col">
+          <div class="vz-cell ex-reveal" style="--o: 1">
+            <button class="vz-piece" type="button" style="--r: 1.7917" data-index="0"
+                    data-full="web/cam-study-960.webp 960w, web/cam-study-1600.webp 1600w, web/cam-study-2560.webp 2560w, CamStudy.png 2752w">
+              <img src="web/cam-study-960.webp"
+                   srcset="web/cam-study-960.webp 960w, web/cam-study-1600.webp 1600w, web/cam-study-2560.webp 2560w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="Camera body and lens floating apart on an orange backdrop"
+                   width="2752" height="1536" fetchpriority="high" decoding="async">
+            </button>
+          </div>
+          <div class="vz-cell ex-reveal" style="--o: 6">
+            <button class="vz-piece vz-piece--white" type="button" style="--r: 1.0853" data-index="5"
+                    data-full="web/bikes-lined-up-960.webp 960w, web/bikes-lined-up-1600.webp 1600w, web/bikes-lined-up-2560.webp 2560w, Lined%20Up%20Render%20%2810%29.70.jpg 3600w">
+              <img src="web/bikes-lined-up-960.webp"
+                   srcset="web/bikes-lined-up-960.webp 960w, web/bikes-lined-up-1600.webp 1600w, web/bikes-lined-up-2560.webp 2560w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="Five pastel balance bikes lined up on white"
+                   width="3600" height="3317" loading="lazy" decoding="async">
+            </button>
+          </div>
+          <div class="vz-cell ex-reveal" style="--o: 7">
+            <button class="vz-piece" type="button" style="--r: 1.0000" data-index="6"
+                    data-full="web/bikes-pastel-960.webp 960w, web/bikes-pastel-1600.webp 1600w, web/bikes-pastel-2048.webp 2048w">
+              <img src="web/bikes-pastel-960.webp"
+                   srcset="web/bikes-pastel-960.webp 960w, web/bikes-pastel-1600.webp 1600w, web/bikes-pastel-2048.webp 2048w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="The five balance bikes against matching pastel stripes"
+                   width="2048" height="2048" loading="lazy" decoding="async">
+            </button>
+          </div>
+          <div class="vz-cell ex-reveal" style="--o: 8">
+            <button class="vz-piece" type="button" style="--r: 1.0000" data-index="7"
+                    data-full="web/bike-spring-960.webp 960w, web/bike-spring-1600.webp 1600w, web/bike-spring-2048.webp 2048w">
+              <img src="web/bike-spring-960.webp"
+                   srcset="web/bike-spring-960.webp 960w, web/bike-spring-1600.webp 1600w, web/bike-spring-2048.webp 2048w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="Close-up of a coil-over rear shock on a bike frame, lit blue"
+                   width="2048" height="2048" loading="lazy" decoding="async">
+            </button>
+          </div>
+        </div>
+
+        <!-- Right column: its twin, then Legit, then Grill. The two
+             pens share one cell so a 9:16 pair stands no taller than
+             a square. Assigned so both columns end level. -->
+        <div class="vz-col">
+          <div class="vz-cell ex-reveal" style="--o: 2">
+            <button class="vz-piece" type="button" style="--r: 1.8400" data-index="1"
+                    data-full="web/cam-study-black-960.webp 960w, web/cam-study-black-1600.webp 1600w, web/cam-study-black-2560.webp 2560w, untitled.16.jpg 3840w">
+              <img src="web/cam-study-black-960.webp"
+                   srcset="web/cam-study-black-960.webp 960w, web/cam-study-black-1600.webp 1600w, web/cam-study-black-2560.webp 2560w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="The same camera and lens floating apart on black"
+                   width="3840" height="2087" decoding="async">
+            </button>
+          </div>
+          <div class="vz-cell vz-cell--pair ex-reveal" style="--o: 3">
+            <button class="vz-piece" type="button" style="--r: 0.5581" data-index="2"
+                    data-full="web/legit-green-960.webp 960w, web/legit-green-1536.webp 1536w">
+              <img src="web/legit-green-960.webp"
+                   srcset="web/legit-green-960.webp 960w, web/legit-green-1536.webp 1536w"
+                   sizes="(max-width: 768px) 45vw, (min-width: 1560px) 344px, 23vw"
+                   alt="Green Legit pen standing on a pink plinth"
+                   width="1536" height="2752" loading="lazy" decoding="async">
+            </button>
+            <button class="vz-piece" type="button" style="--r: 0.5581" data-index="3"
+                    data-full="web/legit-black-960.webp 960w, web/legit-black-1536.webp 1536w">
+              <img src="web/legit-black-960.webp"
+                   srcset="web/legit-black-960.webp 960w, web/legit-black-1536.webp 1536w"
+                   sizes="(max-width: 768px) 45vw, (min-width: 1560px) 344px, 23vw"
+                   alt="Black Legit pen standing on a pink plinth"
+                   width="1536" height="2752" loading="lazy" decoding="async">
+            </button>
+          </div>
+          <div class="vz-cell ex-reveal" style="--o: 5">
+            <button class="vz-piece" type="button" style="--r: 1.2414" data-index="4"
+                    data-full="web/legit-case-960.webp 960w, web/legit-case-1600.webp 1600w, web/legit-case-2304.webp 2304w">
+              <img src="web/legit-case-960.webp"
+                   srcset="web/legit-case-960.webp 960w, web/legit-case-1600.webp 1600w, web/legit-case-2304.webp 2304w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="Black Legit case on a weathered wooden table"
+                   width="2304" height="1856" loading="lazy" decoding="async">
+            </button>
+          </div>
+          <div class="vz-cell ex-reveal" style="--o: 9">
+            <button class="vz-piece vz-piece--white" type="button" style="--r: 1.4792" data-index="8"
+                    data-full="web/grill-white-960.webp 960w, web/grill-white-1600.webp 1600w, web/grill-white-2560.webp 2560w, InUseWWater.35.jpg 3840w">
+              <img src="web/grill-white-960.webp"
+                   srcset="web/grill-white-960.webp 960w, web/grill-white-1600.webp 1600w, web/grill-white-2560.webp 2560w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="Grill Speaker with its panels expanded, reflected in water on white"
+                   width="3840" height="2596" loading="lazy" decoding="async">
+            </button>
+          </div>
+          <div class="vz-cell ex-reveal" style="--o: 10">
+            <button class="vz-piece" type="button" style="--r: 1.7917" data-index="9"
+                    data-full="web/speakers-room-960.webp 960w, web/speakers-room-1600.webp 1600w, web/speakers-room-2560.webp 2560w, SpeakrsInEvniroetn.png 2752w">
+              <img src="web/speakers-room-960.webp"
+                   srcset="web/speakers-room-960.webp 960w, web/speakers-room-1600.webp 1600w, web/speakers-room-2560.webp 2560w"
+                   sizes="(max-width: 768px) 92vw, (min-width: 1560px) 700px, 46vw"
+                   alt="Two speakers on a walnut sideboard in a warm 1970s living room"
+                   width="2752" height="1536" loading="lazy" decoding="async">
+            </button>
+          </div>
+        </div>
+
+        <!-- The one panoramic piece spans both columns and closes -->
+        <div class="vz-cell vz-cell--span ex-reveal" style="--o: 11">
+          <button class="vz-piece" type="button" style="--r: 2.7436" data-index="10"
+                  data-full="web/legit-landscape-960.webp 960w, web/legit-landscape-1600.webp 1600w, web/legit-landscape-2560.webp 2560w, Landsacep%20MNL.png 3424w">
+            <img src="web/legit-landscape-960.webp"
+                 srcset="web/legit-landscape-960.webp 960w, web/legit-landscape-1600.webp 1600w, web/legit-landscape-2560.webp 2560w"
+                 sizes="(max-width: 768px) 100vw, (min-width: 1560px) 1416px, 92vw"
+                 alt="Two green Legit pens on a pink set, one standing, one lying down"
+                 width="3424" height="1248" loading="lazy" decoding="async">
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         Onward
+         ======================================================== -->
+    <section class="ex-shell">
+      <div class="ex-onward">
+        <a href="../projects/index.html" class="ex-link">
+          Products <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="../about/index.html" class="ex-link">
+          About <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="../index.html" class="ex-link">
+          Home <span class="ex-link__cue" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       Footer
+       ============================================================ -->
+  <footer class="ex-foot">
+    <div class="ex-shell ex-foot__inner">
+      <span class="ex-annot ex-annot--ink">Keegan O&rsquo;Neill</span>
+      <span class="ex-annot">Industrial &amp; product design</span>
+      <span class="ex-annot">2026</span>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       Viewer — a native dialog: focus is held inside it, Escape
+       closes it, and focus returns to the piece that opened it.
+       ============================================================ -->
+  <dialog class="vz-viewer" aria-label="Image viewer">
+    <div class="vz-viewer__bar vz-viewer__bar--top">
+      <span class="ex-annot vz-viewer__count" aria-live="polite"></span>
+      <button class="ex-link" type="button" data-close>Close</button>
+    </div>
+
+    <div class="vz-viewer__stage" data-close>
+      <img class="vz-viewer__img" alt="" sizes="100vw">
+    </div>
+
+    <div class="vz-viewer__bar vz-viewer__bar--bottom">
+      <button class="ex-link" type="button" data-step="-1">Previous</button>
+      <button class="ex-link" type="button" data-step="1">Next</button>
+    </div>
+  </dialog>
+
+  <script src="../js/museum.js"></script>
+  <script>
+    (() => {
+      const pieces = [...document.querySelectorAll('.vz-piece')]
+        .sort((a, b) => a.dataset.index - b.dataset.index);
+      const viewer = document.querySelector('.vz-viewer');
+      const img = viewer.querySelector('.vz-viewer__img');
+      const count = viewer.querySelector('.vz-viewer__count');
+      const pad = (n) => String(n).padStart(2, '0');
+      let at = 0;
+
+      const show = (i) => {
+        at = (i + pieces.length) % pieces.length;
+        const piece = pieces[at];
+        const thumb = piece.querySelector('img');
+
+        img.classList.add('is-loading');
+        img.onload = () => img.classList.remove('is-loading');
+        img.srcset = piece.dataset.full;
+        img.src = thumb.currentSrc || thumb.src;
+        img.alt = thumb.alt;
+        if (img.complete) img.classList.remove('is-loading');
+
+        count.textContent = pad(at + 1) + ' / ' + pad(pieces.length);
+      };
+
+      pieces.forEach((piece, i) => {
+        piece.addEventListener('click', () => {
+          show(i);
+          viewer.showModal();
+        });
+      });
+
+      viewer.addEventListener('click', (e) => {
+        const step = e.target.closest('[data-step]');
+        if (step) return show(at + Number(step.dataset.step));
+        if (e.target.closest('[data-close]') && e.target !== img) viewer.close();
+      });
+
+      viewer.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') show(at + 1);
+        if (e.key === 'ArrowLeft') show(at - 1);
+      });
+
+      /* Swipe between pieces on touch screens. */
+      let x0 = null;
+      viewer.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+      viewer.addEventListener('touchend', (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 48) show(at + (dx < 0 ? 1 : -1));
+        x0 = null;
+      });
+    })();
+  </script>
+</body>
+</html>

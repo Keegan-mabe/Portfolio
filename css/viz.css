@@ -1,0 +1,258 @@
+/* ============================================================
+   VIZ — the visualization wall
+   ------------------------------------------------------------
+   A layer over css/museum.css. Tokens, navigation, the page
+   title, links and footer are the theme's own; this file adds
+   the wall, its cells, and the viewer.
+
+   Prefix: .vz-
+
+   Two columns of equal width, each a stack of whole pictures —
+   nothing is cropped, so each stack's height is the sum of its
+   pictures. The pieces are assigned to the columns so the two
+   stacks end level; the edges inside them stagger, which is what
+   lets mixed proportions sit together without a grid forcing
+   them into one shape. One panoramic piece spans both.
+
+   Contents
+     1  Tokens
+     2  Header
+     3  Wall and cells
+     4  Viewer
+     5  Motion
+     6  Responsive
+     7  Reduced motion
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. TOKENS
+   ------------------------------------------------------------ */
+:root[data-page='viz'] {
+  /* One spacing for the whole wall — between the columns, between
+     pieces in a column, and between the two pens in their cell —
+     so the white reads as one grid line drawn everywhere. */
+  --vz-gap: clamp(10px, 1.1vw, 18px);
+}
+
+/* ------------------------------------------------------------
+   2. HEADER
+   ------------------------------------------------------------
+   The theme's page title alone, brought up and in: less air
+   above it, and the wall starts close underneath, so the first
+   screen is mostly pictures.
+   ------------------------------------------------------------ */
+.vz-head {
+  padding-top: calc(var(--nav-h) + clamp(40px, 6vw, 104px));
+  padding-bottom: clamp(24px, 3vw, 48px);
+}
+.vz-head .ex-page__title { margin-top: 0; }
+
+/* ------------------------------------------------------------
+   3. WALL AND CELLS
+   ------------------------------------------------------------ */
+.vz-wall {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--vz-gap);
+  align-items: start;
+  padding-bottom: var(--s-8);
+}
+
+.vz-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vz-gap);
+}
+
+/* A cell holds one piece — or, for the pens, two side by side,
+   each growing by its own ratio so they share one height. */
+.vz-cell { display: flex; gap: var(--vz-gap); }
+.vz-cell--span { grid-column: 1 / -1; }
+
+/* A piece is the picture and nothing else — no frame, caption
+   or shadow. It is a button because it opens the viewer. */
+.vz-piece {
+  flex: var(--r) 1 0;
+  min-width: 0;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: #f3f3f3;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.vz-piece img {
+  width: 100%;
+  height: auto;
+  transition: transform 1100ms var(--ease);
+}
+
+/* A render made on white has no edge of its own, and in a grid
+   the edge is the point: without one the column line breaks and
+   the piece reads as a gap. A hairline gives it the frame the
+   others get from their backdrops — drawn over the picture's
+   outermost pixel, so nothing is covered but white. */
+.vz-piece--white {
+  position: relative;
+  background: transparent;
+}
+/* A layer of its own: the picture is transformed while it settles,
+   which lifts it over anything the button itself draws. */
+.vz-piece--white::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+/* The only hover: a slow push in, as if stepping toward it. */
+@media (hover: hover) {
+  .vz-piece:hover img { transform: scale(1.015); }
+}
+
+.vz-piece:focus-visible { outline-offset: 6px; }
+
+/* ------------------------------------------------------------
+   4. VIEWER
+   ------------------------------------------------------------
+   White, like the page, so a render is shown on the same ground
+   it was hung on — just larger. The controls are the theme's
+   text links; the count is the only number on the page.
+   ------------------------------------------------------------ */
+.vz-viewer {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--paper);
+  color: var(--ink);
+  opacity: 0;
+  transition:
+    opacity var(--dur-2) var(--ease),
+    overlay var(--dur-2) allow-discrete,
+    display var(--dur-2) allow-discrete;
+}
+.vz-viewer[open] { opacity: 1; }
+@starting-style { .vz-viewer[open] { opacity: 0; } }
+.vz-viewer::backdrop { background: transparent; }
+
+/* The wall holds still behind an open viewer. */
+html:has(.vz-viewer[open]) { overflow: hidden; }
+
+.vz-viewer__stage {
+  position: absolute;
+  inset: calc(var(--nav-h) + var(--s-2)) var(--gutter) calc(var(--nav-h) + var(--s-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.vz-viewer__img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-3) var(--ease);
+}
+.vz-viewer__img.is-loading { opacity: 0; transform: scale(0.985); }
+
+/* Bars top and bottom, on the theme's measure: count and close
+   above, previous and next below. */
+.vz-viewer__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.vz-viewer__bar--top    { top: 0; }
+.vz-viewer__bar--bottom { bottom: 0; }
+
+.vz-viewer button.ex-link {
+  padding: var(--s-2) 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+.vz-viewer__count { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------
+   5. MOTION
+   ------------------------------------------------------------
+   The theme's own card reveal, applied once per cell: the clip
+   opens from below and the picture settles from 1.04. The second
+   pen follows a beat behind the first.
+   ------------------------------------------------------------ */
+.ex-reveal .vz-piece {
+  clip-path: inset(10% 0 0 0);
+  transition: clip-path var(--dur-3) var(--ease);
+}
+.ex-reveal .vz-piece img { transform: scale(1.04); }
+
+.ex-reveal.is-visible .vz-piece { clip-path: inset(0 0 0 0); }
+.ex-reveal.is-visible .vz-piece img { transform: scale(1); }
+
+.ex-reveal .vz-piece:nth-child(2) { transition-delay: 90ms; }
+
+/* The hover push has to win over the settled state. */
+@media (hover: hover) {
+  .ex-reveal.is-visible .vz-piece:hover img { transform: scale(1.015); }
+}
+
+/* ------------------------------------------------------------
+   6. RESPONSIVE
+   ------------------------------------------------------------
+   A phone gets one column in reading order rather than the two
+   stacks read one after the other: the columns dissolve and each
+   cell takes its place from --o, so the camera twins stay
+   together and the panorama still closes. The pens keep their
+   pairing — two tall frames fill a phone the way one wide frame
+   fills a desk — and the panorama runs edge to edge, where inside
+   the gutters it would be a strip.
+   ------------------------------------------------------------ */
+@media (max-width: 768px) {
+  :root[data-page='viz'] { --vz-gap: 10px; }
+
+  .vz-wall {
+    display: flex;
+    flex-direction: column;
+  }
+  .vz-col { display: contents; }
+  .vz-cell { order: var(--o); }
+
+  .vz-cell--span { margin-inline: calc(var(--gutter) * -1); }
+
+  .vz-viewer__stage { inset: var(--nav-h) var(--s-3); }
+}
+
+/* ------------------------------------------------------------
+   7. REDUCED MOTION
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .ex-reveal .vz-piece,
+  .ex-reveal .vz-piece img,
+  .vz-piece img,
+  .vz-viewer,
+  .vz-viewer__img {
+    clip-path: none;
+    transform: none;
+    transition: none;
+  }
+  .vz-piece:hover img,
+  .ex-reveal.is-visible .vz-piece:hover img { transform: none; }
+}
